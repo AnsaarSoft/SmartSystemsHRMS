@@ -1,0 +1,41 @@
+﻿@layout LoginLayout
+@page "/login"
+
+<style>
+    .buttonspace{
+        margin-top: 3rem;
+    }
+
+    .loginbutton{
+        width: 8rem;
+    }
+</style>
+
+@if (PageLoad)
+{
+
+    <EditForm Model="model" OnValidSubmit="PostSubmit">
+        <DataAnnotationsValidator />
+        <MudCard>
+            <MudCardContent>
+
+                <MudTextField Label="Usercode/Email" HelperText="Max. 150 characters" Variant="Variant.Outlined"
+                              @bind-Value="model.UserCode" For="@(() => model.UserCode)" />
+                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3" Variant="Variant.Outlined"
+                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+
+                <div class="buttonspace">
+                    <MudButton Class="loginbutton" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Login</MudButton>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </EditForm>
+
+
+}
+else
+{
+    <MudOverlay DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Tertiary" Indeterminate="true" />
+    </MudOverlay>
+}

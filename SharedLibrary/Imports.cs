@@ -1,0 +1,9 @@
+﻿global using SharedLibrary.Model;
+global using SharedLibrary.Model.EmployeeManagement;
+global using SharedLibrary.Model.EmployeeManagement.Master;
+global using SharedLibrary.Model.OrganizationManagement;
+global using SharedLibrary.Model.SystemManagement;
+global using SharedLibrary.ViewModel;
+global using System.ComponentModel;
+global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
