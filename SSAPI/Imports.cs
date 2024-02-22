@@ -12,10 +12,10 @@ global using SSAPI.Repository.Implementation;
 global using SSAPI.Repository.Implementation.EmployeeManagement;
 global using SSAPI.Repository.Interface;
 global using SSAPI.Repository.Interface.EmployeeManagement;
-
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.SqlServer;
+global using Microsoft.EntityFrameworkCore.Sqlite;
 global using NLog;
 global using NLog.Web;
