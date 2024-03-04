@@ -2,6 +2,6 @@
 {
     public interface IUser
     {
-        public Task<MstUser> ValidateUser(vmLogin user);
+        public Task<vmLogin> ValidateUser(vmLogin user);
     }
 }

@@ -15,7 +15,8 @@ try
     builder.Host.UseNLog();
     
     //builder.Services.AddAuthorization();
-    //builder.Services.AddScoped<AuthenticationStateProvider, AppAuth>();
+    builder.Services.AddScoped<AuthenticationStateProvider, AppAuth>();
+    builder.Services.AddAuthorizationCore();
     //builder.Services.AddMudServices();
     builder.Services.AddMudServices(config =>
     {

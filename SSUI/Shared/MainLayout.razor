@@ -36,13 +36,9 @@ else
                 <MudAppBar Elevation="1">
                     Smart Systems
                     <MudIconButton Style="margin-left:1rem;" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggler())" />
+                    <MudIconButton Style="margin-left:10px;" Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" Edge="Edge.End"></MudIconButton>
+                    <MudIconButton Style="margin-left:10px;" Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => LogoutUser())"></MudIconButton>
                     <div class="rightbuttons">
-                        <MudIconButton Style="margin-left:10px;" Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" Edge="Edge.End"></MudIconButton>
-                        <MudIconButton Style="margin-left:10px;" Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End"></MudIconButton>
-                    </div>
-                    <div class="rightbuttons">
-                        <MudIconButton Style="margin-left:10px;" Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" Edge="Edge.End"></MudIconButton>
-                        <MudIconButton Style="margin-left:10px;" Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End"></MudIconButton>
                     </div>
                 </MudAppBar>
                 <MudDrawer @bind-Open="@DrawerToggle" ClipMode="DrawerClipMode.Docked" Elevation="2">
@@ -53,9 +49,9 @@ else
                     @Body
                 </MudMainContent>
             </Authorized>
-            <NotAuthorized>
-                <SSUI.Pages.EmployeeManagement.LoginPage />
-            </NotAuthorized>
+            @* <NotAuthorized>
+        <SSUI.Pages.EmployeeManagement.LoginPage />
+        </NotAuthorized> *@
         </AuthorizeView>
 
 

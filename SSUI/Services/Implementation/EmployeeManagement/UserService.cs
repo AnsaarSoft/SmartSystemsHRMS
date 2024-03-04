@@ -9,7 +9,7 @@
             client = _client;
             logger = log;
         }
-        public async Task<MstUser?> ValidateUser(vmLogin user)
+        public async Task<vmLogin?> ValidateUser(vmLogin user)
         {
             try
             {
@@ -23,7 +23,8 @@
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
-                    var oUser = JsonConvert.DeserializeObject<MstUser>(stringContent);
+                    var oUser = JsonConvert.DeserializeObject<vmLogin>(stringContent);
+                    
                     return oUser;
                 }
                 

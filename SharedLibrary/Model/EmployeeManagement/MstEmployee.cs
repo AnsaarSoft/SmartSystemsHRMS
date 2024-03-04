@@ -35,11 +35,6 @@ namespace SharedLibrary.Model.EmployeeManagement
         public string WorkCountry { get; set; } = string.Empty;
         public int EmployeeID { get; set; }
 
-        [StringLength(50)]
-        public string UserCode { get; set; } = string.Empty;
-
-        [StringLength(100)]
-        public string Password { get; set; } = string.Empty;
         public bool UserType { get; set; }
 
         public bool flgActive { get; set; } = true;

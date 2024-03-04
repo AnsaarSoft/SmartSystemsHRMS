@@ -10,9 +10,9 @@ namespace SSUI.Authorization
     {
         private readonly AuthenticationState oState;
         private readonly ILogger<AppAuth> log;
-        private readonly ProtectedBrowserStorage oStorage;
+        private readonly ProtectedLocalStorage oStorage;
 
-        public AppAuth(ILogger<AppAuth> logger, ProtectedBrowserStorage storage)
+        public AppAuth(ILogger<AppAuth> logger, ProtectedLocalStorage storage)
         {
             log = logger;
             oStorage = storage;
@@ -23,8 +23,8 @@ namespace SSUI.Authorization
 			try
 			{
                 var AccessToken = await oStorage.GetAsync<string>("accesstoken");
-                var UserInfo = await oStorage.GetAsync<string>("userinfo");
-                var Company = await oStorage.GetAsync<string>("company");
+                var UserInfo = await oStorage.GetAsync<MstUser>("userinfo");
+                //var Company = await oStorage.GetAsync<MstCompany>("company");
                 if(!string.IsNullOrEmpty(AccessToken.Value))
                 {
                     var IdentityUser = JwtParser.ParseClaimsFromJwt(AccessToken.Value);

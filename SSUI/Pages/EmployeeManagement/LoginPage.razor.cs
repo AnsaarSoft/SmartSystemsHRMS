@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using SharedLibrary.Model.EmployeeManagement;
 using SharedLibrary.ViewModel;
 
@@ -20,6 +21,7 @@ namespace SSUI.Pages.EmployeeManagement
         [Inject] IUser oUserService { get; set; }
         [Inject] ISnackbar oToast { get; set; }
         [Inject] NavigationManager oNavigation {  get; set; }
+        [Inject] ProtectedLocalStorage oStorage { get; set; }
         #endregion
 
         #region Functions
@@ -45,13 +47,15 @@ namespace SSUI.Pages.EmployeeManagement
                 //await Task.Delay(1000);
                 
                 var oValidatedUser = await oUserService.ValidateUser(model);
-                if (oValidatedUser is null)
+                if (oValidatedUser.ValidatedUser is null)
                 {
                     oToast.Add("Check your entered credentials", Severity.Error);
                 }
                 else
                 {
-                    oNavigation.NavigateTo("/dashboard");
+                    await oStorage.SetAsync("accesstoken", oValidatedUser.JwtToken);
+                    await oStorage.SetAsync("userinfo", oValidatedUser.ValidatedUser);
+                    
                 }
             }
             catch(Exception ex)

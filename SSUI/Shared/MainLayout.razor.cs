@@ -40,11 +40,11 @@ namespace SSUI.Shared
                 //    //navigation.NavigateTo("/login");
                 //}
                 //navigation.NavigateTo("/login");
-                var loginUser = await storage.GetAsync<string>("userinfo");
+                var loginUser = await storage.GetAsync<MstUser>("userinfo");
                 if(!loginUser.Success)
                 {
                     PageLoad = true;
-                    navigation.NavigateTo("/login");
+                    navigation.NavigateTo("/login", true);
                 }
                 else 
                 {
@@ -63,7 +63,19 @@ namespace SSUI.Shared
             DrawerToggle = !DrawerToggle;
         }
 
-
+        async Task LogoutUser()
+        {
+            try
+            {
+                await storage.DeleteAsync("userinfo");
+                await storage.DeleteAsync("accesstoken");
+                navigation.NavigateTo("login", true);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+            }
+        }
         #endregion
     }
 }

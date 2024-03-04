@@ -14,3 +14,7 @@ global using SharedLibrary.ViewModel;
 global using SSAPI.Context;
 global using SSAPI.Repository.Implementation.EmployeeManagement;
 global using SSAPI.Repository.Interface.EmployeeManagement;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.IdentityModel.Tokens;
+global using SSAPI.Helpers;
+global using System.Text;

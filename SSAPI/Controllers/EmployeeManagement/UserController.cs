@@ -1,56 +1,71 @@
 ﻿
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using SharedLibrary.Model.EmployeeManagement;
+using SSAPI.Helpers;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace SSAPI.Controllers.EmployeeManagement
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), Authorize]
     [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUser repo;
         //private readonly IMstEmployee repoEmployee;
         private readonly ILogger<UserController> log;
-        public UserController(IUser user, ILogger<UserController> logger)
+        private readonly IConfiguration config;
+
+        public UserController(IUser user, ILogger<UserController> logger, IConfiguration configuration)
         {
             repo = user;
             log = logger;
+            config = configuration;
         }
 
-        [HttpPost("validateuser")]
-        [AllowAnonymous]
-        public async Task<ActionResult<MstUser>> ValidateUser([FromBody] vmLogin oRecord)
+        [HttpPost("validateuser"), AllowAnonymous]
+        public async Task<ActionResult<vmLogin>> ValidateUser([FromBody] vmLogin oRecord)
         {
-            
+            vmLogin login = new vmLogin();
             try
             {
                 var dbuser = await repo.GetUser(oRecord.UserCode);
-                if (dbuser is null)
+                if (dbuser?.Id == Guid.Empty)
                 {
-                    return NotFound("user not found in database.");
+                    login.UserCode = oRecord.UserCode;
+                    login.Password = oRecord.Password;
+                    login.ValidatedUser = null;
+                    login.JwtToken = string.Empty;
+                    return NotFound(login);
                 }
                 else
                 {
-                    if (dbuser.UserCode == "manager")
+                    if (dbuser?.UserCode == "manager")
                     {
-                        //string PasswordHashBase = "2c8a9c40eb0b09b4423ed500664fb22fde7a7d202cca278b168d89c0963a7f05";
-                        //string PasswordHashUser = GetHashPassword(oRecord.Password, oRecord.UserCode, dbuser.Id.ToString());
-                        //if (PasswordHashBase == PasswordHashUser)
-                        //{
-                        //    vmLogin login = new vmLogin();
-                        //    //login.Employee = await repoEmployee.GetEmployee(dbuser.Id) ?? null;
-                        //    //login.oUser = dbuser;
-                        //    //login.JwtToken = "new token baby";
-                        //    return Ok(login);
-                        //}
-                        //else
-                        //{
-                        //    return NotFound("credential not validated.");
-                        //}
-                        return Ok(dbuser);
+                        string PasswordHashBase = "7b9a9138d2c0ecd0383b1bd138877c992f71c108fb160267bcebe213a7604417";
+                        string PasswordHashUser = GetHashPassword(oRecord.Password, oRecord.UserCode, dbuser.Id.ToString());
+                        if (PasswordHashBase == PasswordHashUser)
+                        {
+                            login.UserCode = oRecord.UserCode;
+                            login.Password = oRecord.Password;
+                            login.JwtToken = CreateJwtToken(dbuser);
+                            login.ValidatedUser = dbuser;
+                            return Ok(login);
+                        }
+                        else
+                        {
+                            login.UserCode = oRecord.UserCode;
+                            login.Password = oRecord.Password;
+                            login.JwtToken = string.Empty;
+                            login.ValidatedUser = null;
+                            login.message = Messaging.CredentialError;
+                            return NotFound(login);
+                        }
+                        //return Ok(dbuser);
                     }
                     else
                     {
@@ -58,14 +73,20 @@ namespace SSAPI.Controllers.EmployeeManagement
                         string PasswordHashUser = GetHashPassword(oRecord.Password, oRecord.UserCode, dbuser.Id.ToString());
                         if (PasswordHashBase == PasswordHashUser)
                         {
-                            vmLogin login = new vmLogin();
-                            //login.oUser = dbuser;
-                            //login.JwtToken = "new token baby";
+                            login.UserCode = oRecord.UserCode;
+                            login.Password = oRecord.Password;
+                            login.JwtToken = CreateJwtToken(dbuser);
+                            login.ValidatedUser = dbuser;
                             return Ok(login);
                         }
                         else
                         {
-                            return NotFound("credential not validated.");
+                            login.UserCode = oRecord.UserCode;
+                            login.Password = oRecord.Password;
+                            login.JwtToken = string.Empty;
+                            login.ValidatedUser = null;
+                            login.message = Messaging.CredentialError;
+                            return NotFound(login);
                         }
                     }
                 }
@@ -73,7 +94,30 @@ namespace SSAPI.Controllers.EmployeeManagement
             catch (Exception ex)
             {
                 log.LogError(ex, "exception validateuser");
-                return BadRequest("exception on validation.");
+                login.message = Messaging.ServerError;
+                return BadRequest(login);
+            }
+        }
+        [HttpPost("getusers")]
+        public async Task<ActionResult<List<MstUser>>> GetUsers()
+        {
+            try
+            {
+                await Task.Delay(1000);
+                var oCollection = await repo.GetUserList();
+                if(oCollection.Count == 0)
+                {
+                    return NotFound("No user found.");
+                }
+                else
+                {
+                    return Ok(oCollection);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
             }
         }
         private string GetHashPassword(string password, string usercode, string id)
@@ -82,12 +126,9 @@ namespace SSAPI.Controllers.EmployeeManagement
             {
                 string value = id + usercode + password;
                 byte[] inputBytes = Encoding.UTF8.GetBytes(value);
-                // Create a new instance of the SHA256 algorithm class
                 using (SHA256 sha256 = SHA256.Create())
                 {
-                    // Compute the hash value from the input byte array
                     byte[] hashBytes = sha256.ComputeHash(inputBytes);
-                    // Convert the byte array to a hexadecimal string
                     StringBuilder sb = new StringBuilder();
                     foreach (byte b in hashBytes)
                     {
@@ -100,6 +141,31 @@ namespace SSAPI.Controllers.EmployeeManagement
             {
                 log.LogError(ex, "exception gethashpassword  ");
                 return "";
+            }
+        }
+        private string CreateJwtToken(MstUser user)
+        {
+            try
+            {
+                List<Claim> claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, user.UserCode),
+                    new Claim(ClaimTypes.GivenName, user.UserType.ToString())
+                };
+                var TokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("AppSettings:JwtKey").Value));
+                var TokenCredentials = new SigningCredentials(TokenKey, SecurityAlgorithms.HmacSha256);
+                var TokenConfig = new JwtSecurityToken(
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(15),
+                    signingCredentials: TokenCredentials
+                    );
+                var Token = new JwtSecurityTokenHandler().WriteToken(TokenConfig);
+                return Token;
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return string.Empty;
             }
         }
 
