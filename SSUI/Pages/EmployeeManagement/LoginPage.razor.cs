@@ -46,16 +46,15 @@ namespace SSUI.Pages.EmployeeManagement
             {
                 //await Task.Delay(1000);
                 
-                var oValidatedUser = await oUserService.ValidateUser(model);
-                if (oValidatedUser.ValidatedUser is null)
+                var oViewModel = await oUserService.ValidateUser(model);
+                if (oViewModel is null)
                 {
                     oToast.Add("Check your entered credentials", Severity.Error);
                 }
                 else
                 {
-                    await oStorage.SetAsync("accesstoken", oValidatedUser.JwtToken);
-                    await oStorage.SetAsync("userinfo", oValidatedUser.ValidatedUser);
-                    
+                    await oStorage.SetAsync("accesstoken", oViewModel.JwtToken);
+                    await oStorage.SetAsync("userinfo", oViewModel.ValidatedUser);
                 }
             }
             catch(Exception ex)
