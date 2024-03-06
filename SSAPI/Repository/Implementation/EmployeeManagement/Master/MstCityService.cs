@@ -2,29 +2,95 @@
 {
     public class MstCityService : IMstCity
     {
-        public Task<bool> AddCity(MstCity oRecord)
+        private readonly AppDBContext odb;
+        public MstCityService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddCity(MstCity oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstCities.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteCity(int id)
+        public async Task<bool> DeleteCity(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstCities
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstCity> GetCity(int id)
+        public async Task<MstCity> GetCity(Guid id)
         {
-            throw new NotImplementedException();
+            MstCity? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstCities
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstCity>> GetCityList()
+        public async Task<List<MstCity>> GetCityList()
         {
-            throw new NotImplementedException();
+            List<MstCity> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstCities
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateCity(MstCity oRecord)
+        public async Task<bool> UpdateCity(MstCity oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstCities.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

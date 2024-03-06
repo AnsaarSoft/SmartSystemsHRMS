@@ -1,6 +1,6 @@
 ﻿namespace SSAPI.Repository.Interface.EmployeeManagement
 {
-    public class UserService : IUser
+    public class UserService : Implementation.EmployeeManagement.MstUserServices
     {
         private readonly AppDBContext odb;
         private readonly ILogger<UserService> log;
@@ -38,7 +38,7 @@
             }
             catch (Exception ex)
             {
-                log.LogError(ex, ex.Message);   
+                log.LogError(ex, ex.Message);
                 return false;
             }
         }

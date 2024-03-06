@@ -2,29 +2,95 @@
 {
     public class MstCompanyService : IMstCompany
     {
-        public Task<bool> AddCompany(MstCompany oRecord)
+        private readonly AppDBContext odb;
+        public MstCompanyService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddCompany(MstCompany oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstCompanies.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteCompany(int id)
+        public async Task<bool> DeleteCompany(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstCompanies
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstCompany> GetCompany(int id)
+        public async Task<MstCompany> GetCompany(Guid id)
         {
-            throw new NotImplementedException();
+            MstCompany? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstCompanies
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstCompany>> GetCompanyList()
+        public async Task<List<MstCompany>> GetCompanyList()
         {
-            throw new NotImplementedException();
+            List<MstCompany> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstCompanies
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateCompany(MstCompany oRecord)
+        public async Task<bool> UpdateCompany(MstCompany oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstCompanies.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

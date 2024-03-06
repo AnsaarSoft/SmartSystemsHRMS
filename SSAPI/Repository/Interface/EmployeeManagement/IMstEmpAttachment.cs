@@ -2,10 +2,10 @@
 {
     public interface IMstEmpAttachment
     {
-        Task<MstEmpAttachment> GetEmpAttachment(int id);
+        Task<MstEmpAttachment> GetEmpAttachment(Guid id);
         Task<List<MstEmpAttachment>> GetEmpAttachmentList();
         Task<bool> AddEmpAttachment(MstEmpAttachment oRecord);
         Task<bool> UpdateEmpAttachment(MstEmpAttachment oRecord);
-        Task<bool> DeleteEmpAttachment(int id);
+        Task<bool> DeleteEmpAttachment(Guid id);
     }
 }

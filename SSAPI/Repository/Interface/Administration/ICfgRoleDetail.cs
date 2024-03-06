@@ -2,10 +2,10 @@
 {
     public interface ICfgRoleDetail
     {
-        Task<CfgRoleDetail> GetRoleDetail(int id);
+        Task<CfgRoleDetail> GetRoleDetail(Guid id);
         Task<List<CfgRoleDetail>> GetRoleDetailList();
         Task<bool> AddRoleDetail(CfgRoleDetail oRecord);
         Task<bool> UpdateRoleDetail(CfgRoleDetail oRecord);
-        Task<bool> DeleteRoleDetail(int id);
+        Task<bool> DeleteRoleDetail(Guid id);
     }
 }

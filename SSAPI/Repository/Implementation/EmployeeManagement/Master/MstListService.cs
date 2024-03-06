@@ -2,29 +2,95 @@
 {
     public class MstListService : IMstList
     {
-        public Task<bool> AddList(MstList oRecord)
+        private readonly AppDBContext odb;
+        public MstListService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddList(MstList oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstLists.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteList(int id)
+        public async Task<bool> DeleteList(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstLists
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstList> GetList(int id)
+        public async Task<MstList> GetList(Guid id)
         {
-            throw new NotImplementedException();
+            MstList? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstLists
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstList>> GetListList()
+        public async Task<List<MstList>> GetListList()
         {
-            throw new NotImplementedException();
+            List<MstList> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstLists
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateList(MstList oRecord)
+        public async Task<bool> UpdateList(MstList oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstLists.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

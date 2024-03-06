@@ -2,29 +2,95 @@
 {
     public class MstDepartmentService : IMstDepartment
     {
-        public Task<bool> AddDepartment(MstDepartment oRecord)
+        private readonly AppDBContext odb;
+        public MstDepartmentService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddDepartment(MstDepartment oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstDepartments.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteDepartment(int id)
+        public async Task<bool> DeleteDepartment(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstDepartments
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstDepartment> GetDepartment(int id)
+        public async Task<MstDepartment> GetDepartment(Guid id)
         {
-            throw new NotImplementedException();
+            MstDepartment? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstDepartments
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstDepartment>> GetDepartmentList()
+        public async Task<List<MstDepartment>> GetDepartmentList()
         {
-            throw new NotImplementedException();
+            List<MstDepartment> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstDepartments
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateDepartment(MstDepartment oRecord)
+        public async Task<bool> UpdateDepartment(MstDepartment oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstDepartments.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

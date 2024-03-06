@@ -1,30 +1,97 @@
 ﻿namespace Server.Repository.Service.Administration
 {
+
     public class CfgMenuService : ICfgMenu
     {
-        public Task<bool> AddMenu(CfgMenu oRecord)
+        private readonly AppDBContext odb;
+        public CfgMenuService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddMenu(CfgMenu oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.CfgMenus.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteMenu(int id)
+        public async Task<bool> DeleteMenu(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.CfgMenus
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<CfgMenu> GetMenu(int id)
+        public async Task<CfgMenu> GetMenu(Guid id)
         {
-            throw new NotImplementedException();
+            CfgMenu? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.CfgMenus
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<CfgMenu>> GetMenuList()
+        public async Task<List<CfgMenu>> GetMenuList()
         {
-            throw new NotImplementedException();
+            List<CfgMenu> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.CfgMenus
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateMenu(CfgMenu oRecord)
+        public async Task<bool> UpdateMenu(CfgMenu oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.CfgMenus.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

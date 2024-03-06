@@ -3,29 +3,95 @@ namespace Server.Repository.Service.Employee
 {
     public class MstEmpEducationService : IMstEmpEducation
     {
-        public Task<bool> AddEmpEducation(MstEmpEducation oRecord)
+        private readonly AppDBContext odb;
+        public MstEmpEducationService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddEmpEducation(MstEmpEducation oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstEmpEducations.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteEmpEducation(int id)
+        public async Task<bool> DeleteEmpEducation(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstEmpEducations
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstEmpEducation> GetEmpEducation(int id)
+        public async Task<MstEmpEducation> GetEmpEducation(Guid id)
         {
-            throw new NotImplementedException();
+            MstEmpEducation? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstEmpEducations
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstEmpEducation>> GetEmpEducationList()
+        public async Task<List<MstEmpEducation>> GetEmpEducationList()
         {
-            throw new NotImplementedException();
+            List<MstEmpEducation> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstEmpEducations
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateEmpEducation(MstEmpEducation oRecord)
+        public async Task<bool> UpdateEmpEducation(MstEmpEducation oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstEmpEducations.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
