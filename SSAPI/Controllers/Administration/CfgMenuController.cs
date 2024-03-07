@@ -35,5 +35,50 @@
                 return BadRequest(Messaging.ServerError);
             }
         }
+
+        [HttpGet("getmenu/{Id}")]
+        public async Task<ActionResult<CfgMenu>> GetMenu(string Id)
+        {
+            try
+            {
+                if (!Guid.TryParse(Id, out Guid EntityId))
+                {
+                    return BadRequest("Invalid Id.");
+                }
+
+                var oEntity = await repo.GetMenu(EntityId);
+
+                return (oEntity != null) ? Ok(oEntity) :
+                NotFound("Not found.");
+
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
+            }
+        }
+
+        [HttpDelete("deletemenul/{id}")]
+        public async Task<ActionResult> DeleteMenu(string Id)
+        {
+            try
+            {
+                if (!Guid.TryParse(Id, out Guid EntityId))
+                {
+                    return BadRequest("Invalid Id.");
+                }
+
+                bool result = await repo.DeleteMenu(EntityId);
+
+                return result ? Ok("Deleted successfully.") :
+                    BadRequest("Failed to delete.");
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
+            }
+        }
     }
 }

@@ -37,5 +37,50 @@ namespace SSAPI.Controllers.EmployeeManagement
                 return BadRequest(Messaging.ServerError);
             }
         }
+
+        [HttpGet("getempeducation/{Id}")]
+        public async Task<ActionResult<MstEmpEducation>> GetEmpEducation(string Id)
+        {
+            try
+            {
+                if (!Guid.TryParse(Id, out Guid EntityId))
+                {
+                    return BadRequest("Invalid Id.");
+                }
+
+                var oEntity = await repo.GetEmpEducation(EntityId);
+
+                return (oEntity != null) ? Ok(oEntity) :
+                NotFound("Not found.");
+
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
+            }
+        }
+
+        [HttpDelete("deleteempeducation/{id}")]
+        public async Task<ActionResult> DeleteEmpEducation(string Id)
+        {
+            try
+            {
+                if (!Guid.TryParse(Id, out Guid EntityId))
+                {
+                    return BadRequest("Invalid Id.");
+                }
+
+                bool result = await repo.DeleteEmpEducation(EntityId);
+
+                return result ? Ok("Deleted successfully.") :
+                    BadRequest("Failed to delete.");
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
+            }
+        }
     }
 }

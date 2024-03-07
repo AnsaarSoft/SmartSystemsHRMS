@@ -35,5 +35,50 @@
                 return BadRequest(Messaging.ServerError);
             }
         }
+
+        [HttpGet("getdesignation/{Id}")]
+        public async Task<ActionResult<MstDesignation>> GetDesignation(string Id)
+        {
+            try
+            {
+                if (!Guid.TryParse(Id, out Guid EntityId))
+                {
+                    return BadRequest("Invalid Id.");
+                }
+
+                var oEntity = await repo.GetDesignation(EntityId);
+
+                return (oEntity != null) ? Ok(oEntity) :
+                NotFound("Not found.");
+
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
+            }
+        }
+
+        [HttpDelete("deletedesignation/{id}")]
+        public async Task<ActionResult> DeleteDesignation(string Id)
+        {
+            try
+            {
+                if (!Guid.TryParse(Id, out Guid EntityId))
+                {
+                    return BadRequest("Invalid Id.");
+                }
+
+                bool result = await repo.DeleteDesignation(EntityId);
+
+                return result ? Ok("Deleted successfully.") :
+                    BadRequest("Failed to delete.");
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
+            }
+        }
     }
 }

@@ -35,5 +35,50 @@
                 return BadRequest(Messaging.ServerError);
             }
         }
+
+        [HttpGet("getroledetail/{Id}")]
+        public async Task<ActionResult<CfgRoleDetail>> GetRoleDetail(string Id)
+        {
+            try
+            {
+                if (!Guid.TryParse(Id, out Guid EntityId))
+                {
+                    return BadRequest("Invalid Id.");
+                }
+
+                var oEntity = await repo.GetRoleDetail(EntityId);
+
+                return (oEntity != null) ? Ok(oEntity) :
+                NotFound("Not found.");
+
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
+            }
+        }
+
+        [HttpDelete("deleteroledetail/{id}")]
+        public async Task<ActionResult> DeleteRoleDetail(string Id)
+        {
+            try
+            {
+                if (!Guid.TryParse(Id, out Guid EntityId))
+                {
+                    return BadRequest("Invalid Id.");
+                }
+
+                bool result = await repo.DeleteRoleDetail(EntityId);
+
+                return result ? Ok("Deleted successfully.") :
+                    BadRequest("Failed to delete.");
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return BadRequest(Messaging.ServerError);
+            }
+        }
     }
 }
