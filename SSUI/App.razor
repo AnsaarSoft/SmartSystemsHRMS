@@ -14,11 +14,7 @@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    <SSUI.Pages.EmployeeManagement.LoginPage/>
-                </NotAuthorized>
-            </AuthorizeRouteView>
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         </Found>
         <NotFound>
             <PageTitle>Not found</PageTitle>

@@ -1,13 +1,10 @@
 ﻿
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
-using SharedLibrary.Model.EmployeeManagement;
-using SSAPI.Helpers;
+using Server.Repository.Service.Employee;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace SSAPI.Controllers.EmployeeManagement
 {
@@ -15,12 +12,12 @@ namespace SSAPI.Controllers.EmployeeManagement
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUser repo;
+        private readonly MstUserService repo;
         //private readonly IMstEmployee repoEmployee;
         private readonly ILogger<UserController> log;
         private readonly IConfiguration config;
 
-        public UserController(IUser user, ILogger<UserController> logger, IConfiguration configuration)
+        public UserController(MstUserService user, ILogger<UserController> logger, IConfiguration configuration)
         {
             repo = user;
             log = logger;
@@ -105,7 +102,7 @@ namespace SSAPI.Controllers.EmployeeManagement
             {
                 await Task.Delay(1000);
                 var oCollection = await repo.GetUserList();
-                if(oCollection.Count == 0)
+                if (oCollection.Count == 0)
                 {
                     return NotFound("No user found.");
                 }

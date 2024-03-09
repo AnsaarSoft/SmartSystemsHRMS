@@ -2,10 +2,10 @@
 {
     public interface IMstBank
     {
-        Task<MstBank> GetBank(int id);
+        Task<MstBank> GetBank(Guid id);
         Task<List<MstBank>> GetBankList();
         Task<bool> AddBank(MstBank oRecord);
         Task<bool> UpdateBank(MstBank oRecord);
-        Task<bool> DeleteBank(int id);
+        Task<bool> DeleteBank(Guid id);
     }
 }

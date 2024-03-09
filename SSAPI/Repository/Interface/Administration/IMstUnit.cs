@@ -2,10 +2,10 @@
 {
     public interface IMstUnit
     {
-        Task<MstUnit> GetUnit(int id);
+        Task<MstUnit> GetUnit(Guid id);
         Task<List<MstUnit>> GetUnitList();
         Task<bool> AddUnit(MstUnit oRecord);
         Task<bool> UpdateUnit(MstUnit oRecord);
-        Task<bool> DeleteUnit(int id);
+        Task<bool> DeleteUnit(Guid id);
     }
 }

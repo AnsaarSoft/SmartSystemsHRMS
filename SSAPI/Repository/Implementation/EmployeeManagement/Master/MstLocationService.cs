@@ -3,29 +3,95 @@ namespace Server.Repository.Service.Employee.Master
 {
     public class MstLocationService : IMstLocation
     {
-        public Task<bool> AddLocation(MstLocation oRecord)
+        private readonly AppDBContext odb;
+        public MstLocationService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddLocation(MstLocation oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstLocations.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteLocation(int id)
+        public async Task<bool> DeleteLocation(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstLocations
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstLocation> GetLocation(int id)
+        public async Task<MstLocation> GetLocation(Guid id)
         {
-            throw new NotImplementedException();
+            MstLocation? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstLocations
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstLocation>> GetLocationList()
+        public async Task<List<MstLocation>> GetLocationList()
         {
-            throw new NotImplementedException();
+            List<MstLocation> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstLocations
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateLocation(MstLocation oRecord)
+        public async Task<bool> UpdateLocation(MstLocation oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstLocations.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

@@ -3,29 +3,95 @@ namespace Server.Repository.Service.Employee
 {
     public class MstEmpAttachmentService : IMstEmpAttachment
     {
-        public Task<bool> AddEmpAttachment(MstEmpAttachment oRecord)
+        private readonly AppDBContext odb;
+        public MstEmpAttachmentService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddEmpAttachment(MstEmpAttachment oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstEmpAttachments.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteEmpAttachment(int id)
+        public async Task<bool> DeleteEmpAttachment(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstEmpAttachments
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstEmpAttachment> GetEmpAttachment(int id)
+        public async Task<MstEmpAttachment> GetEmpAttachment(Guid id)
         {
-            throw new NotImplementedException();
+            MstEmpAttachment? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstEmpAttachments
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstEmpAttachment>> GetEmpAttachmentList()
+        public async Task<List<MstEmpAttachment>> GetEmpAttachmentList()
         {
-            throw new NotImplementedException();
+            List<MstEmpAttachment> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstEmpAttachments
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateEmpAttachment(MstEmpAttachment oRecord)
+        public async Task<bool> UpdateEmpAttachment(MstEmpAttachment oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstEmpAttachments.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

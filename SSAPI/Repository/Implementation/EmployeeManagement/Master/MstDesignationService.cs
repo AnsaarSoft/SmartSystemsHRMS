@@ -2,29 +2,95 @@
 {
     public class MstDesignationService : IMstDesignation
     {
-        public Task<bool> AddDesignation(MstDesignation oRecord)
+        private readonly AppDBContext odb;
+        public MstDesignationService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddDesignation(MstDesignation oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstDesignations.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteDesignation(int id)
+        public async Task<bool> DeleteDesignation(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstDesignations
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstDesignation> GetDesignation(int id)
+        public async Task<MstDesignation> GetDesignation(Guid id)
         {
-            throw new NotImplementedException();
+            MstDesignation? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstDesignations
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstDesignation>> GetDesignationList()
+        public async Task<List<MstDesignation>> GetDesignationList()
         {
-            throw new NotImplementedException();
+            List<MstDesignation> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstDesignations
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateDesignation(MstDesignation oRecord)
+        public async Task<bool> UpdateDesignation(MstDesignation oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstDesignations.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

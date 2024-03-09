@@ -35,7 +35,7 @@ namespace SSUI.Authorization
                     {
                         if(IdentityUser.Where(x=>x.Type.ToLower() == "UserCode".ToLower()).Count() > 0 )
                         {
-                            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(AccessToken.Value), CookieAuthenticationDefaults.AuthenticationScheme)));
+                            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(AccessToken.Value))));
                         }
                         else
                         {

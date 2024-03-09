@@ -2,10 +2,10 @@
 {
     public interface IMstCompany
     {
-        Task<MstCompany> GetCompany(int id);
+        Task<MstCompany> GetCompany(Guid id);
         Task<List<MstCompany>> GetCompanyList();
         Task<bool> AddCompany(MstCompany oRecord);
         Task<bool> UpdateCompany(MstCompany oRecord);
-        Task<bool> DeleteCompany(int id);
+        Task<bool> DeleteCompany(Guid id);
     }
 }

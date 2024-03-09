@@ -3,29 +3,95 @@ namespace Server.Repository.Service.Employee
 {
     public class MstEmpExperienceService : IMstEmpExperience
     {
-        public Task<bool> AddEmpExperience(MstEmpExperience oRecord)
+        private readonly AppDBContext odb;
+        public MstEmpExperienceService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddEmpExperience(MstEmpExperience oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstEmpExperiences.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteEmpExperience(int id)
+        public async Task<bool> DeleteEmpExperience(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstEmpExperiences
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstEmpExperience> GetEmpExperience(int id)
+        public async Task<MstEmpExperience> GetEmpExperience(Guid id)
         {
-            throw new NotImplementedException();
+            MstEmpExperience? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstEmpExperiences
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstEmpExperience>> GetEmpExperienceList()
+        public async Task<List<MstEmpExperience>> GetEmpExperienceList()
         {
-            throw new NotImplementedException();
+            List<MstEmpExperience> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstEmpExperiences
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateEmpExperience(MstEmpExperience oRecord)
+        public async Task<bool> UpdateEmpExperience(MstEmpExperience oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstEmpExperiences.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

@@ -2,29 +2,95 @@
 {
     public class MstCountryService : IMstCountry
     {
-        public Task<bool> AddCountry(MstCountry oRecord)
+        private readonly AppDBContext odb;
+        public MstCountryService(AppDBContext _dbcontext)
         {
-            throw new NotImplementedException();
+            odb = _dbcontext;
+        }
+        public async Task<bool> AddCountry(MstCountry oRecord)
+        {
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstCountries.Add(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> DeleteCountry(int id)
+        public async Task<bool> DeleteCountry(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    return false;
+                }
+                var oRecord = await (from a in odb.MstCountries
+                                     where a.Id == id
+                                     select a).FirstOrDefaultAsync();
+                if (oRecord is null) { return false; }
+                oRecord.flgDelete = true;
+                oRecord.flgActive = false;
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<MstCountry> GetCountry(int id)
+        public async Task<MstCountry> GetCountry(Guid id)
         {
-            throw new NotImplementedException();
+            MstCountry? oRecord = new();
+            try
+            {
+                if (id == Guid.Empty) { return oRecord; }
+                oRecord = await (from a in odb.MstCountries
+                                 where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
         }
 
-        public Task<List<MstCountry>> GetCountryList()
+        public async Task<List<MstCountry>> GetCountryList()
         {
-            throw new NotImplementedException();
+            List<MstCountry> oRecords = new();
+            try
+            {
+                oRecords = await (from a in odb.MstCountries
+                                  select a).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+            return oRecords;
         }
 
-        public Task<bool> UpdateCountry(MstCountry oRecord)
+        public async Task<bool> UpdateCountry(MstCountry oRecord)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oRecord is null) { return false; }
+                odb.MstCountries.Update(oRecord);
+                await odb.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
