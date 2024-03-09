@@ -63,6 +63,7 @@ namespace SSUI.Authorization
                         }
                     }
                 }
+                NotifyAuthenticationStateChanged(Task.FromResult(oState));
                 return oState;
 			}
 			catch (Exception ex)
