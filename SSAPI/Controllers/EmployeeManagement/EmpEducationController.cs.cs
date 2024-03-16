@@ -1,6 +1,4 @@
-﻿using Server.Repository.Service.Employee;
-
-namespace SSAPI.Controllers.EmployeeManagement
+﻿namespace SSAPI.Controllers.EmployeeManagement
 {
     [Route("api/[controller]")]
     [ApiController]

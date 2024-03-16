@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Service.Employee
+﻿namespace SSAPI.Repository.Implementation.EmployeeManagement
 {
     public class MstEmployeeService : IMstEmployee
     {

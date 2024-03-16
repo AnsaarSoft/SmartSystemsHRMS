@@ -1,5 +1,4 @@
-﻿
-namespace Server.Repository.Service.Employee.Master
+﻿namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
 {
     public class MstBankBranchService : IMstBankBranch
     {

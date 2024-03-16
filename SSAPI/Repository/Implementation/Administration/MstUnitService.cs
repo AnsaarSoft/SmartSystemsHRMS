@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Service.Administration
+﻿namespace SSAPI.Repository.Implementation.Administration
 {
     public class MstUnitService : IMstUnit
     {

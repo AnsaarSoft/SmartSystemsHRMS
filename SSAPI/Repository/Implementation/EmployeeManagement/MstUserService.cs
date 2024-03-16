@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Service.Employee
+﻿namespace SSAPI.Repository.Implementation.EmployeeManagement
 {
     public class MstUserService : IMstUser
     {
@@ -67,6 +67,24 @@
                 if (id == Guid.Empty) { return oRecord; }
                 oRecord = await (from a in odb.MstUsers
                                  where a.Id == id
+                                 select a).FirstOrDefaultAsync();
+
+                return oRecord;
+            }
+            catch (Exception)
+            {
+                return oRecord;
+            }
+        }
+
+        public async Task<MstUser?> GetUser(string usercode)
+        {
+            MstUser? oRecord = new();
+            try
+            {
+                if (string.IsNullOrEmpty(usercode)) { return oRecord; }
+                oRecord = await (from a in odb.MstUsers
+                                 where a.UserCode == usercode
                                  select a).FirstOrDefaultAsync();
 
                 return oRecord;

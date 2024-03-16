@@ -55,6 +55,7 @@ namespace SSUI.Pages.EmployeeManagement
                 {
                     await oStorage.SetAsync("accesstoken", oViewModel.JwtToken);
                     await oStorage.SetAsync("userinfo", oViewModel.ValidatedUser);
+                    oNavigation.NavigateTo("dashboard");
                 }
             }
             catch(Exception ex)

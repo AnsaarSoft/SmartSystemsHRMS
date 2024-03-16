@@ -1,6 +1,6 @@
 ﻿
-namespace Server.Repository.Service.Employee
-{
+namespace SSAPI.Repository.Implementation.EmployeeManagement 
+{ 
     public class MstEmpAttachmentService : IMstEmpAttachment
     {
         private readonly AppDBContext odb;

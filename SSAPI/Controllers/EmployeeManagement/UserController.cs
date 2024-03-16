@@ -1,23 +1,15 @@
-﻿
-
-using Microsoft.AspNetCore.Authorization;
-using Server.Repository.Service.Employee;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-
-namespace SSAPI.Controllers.EmployeeManagement
+﻿namespace SSAPI.Controllers.EmployeeManagement
 {
     [Route("api/[controller]"), Authorize]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly MstUserService repo;
+        private readonly IMstUser repo;
         //private readonly IMstEmployee repoEmployee;
         private readonly ILogger<UserController> log;
         private readonly IConfiguration config;
 
-        public UserController(MstUserService user, ILogger<UserController> logger, IConfiguration configuration)
+        public UserController(IMstUser user, ILogger<UserController> logger, IConfiguration configuration)
         {
             repo = user;
             log = logger;

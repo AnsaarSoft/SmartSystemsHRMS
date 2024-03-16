@@ -6,20 +6,20 @@ try
 
     // Add services to the container.
     //SQL Server
-    //builder.Services.AddDbContext<AppDBContext>(db =>
-    //  db.UseSqlServer(builder.Configuration.GetConnectionString("AppString")), ServiceLifetime.Singleton);
-    //SQL Lite
     builder.Services.AddDbContext<AppDBContext>(db =>
-    {
-        var HostContent = builder.Configuration[HostDefaults.ContentRootKey];
-        var path = Path.Combine(Path.GetDirectoryName(HostContent),"Context", builder.Configuration.GetConnectionString("DBName"));
-        db.UseSqlite($"Data Source={path}");
-    });
+      db.UseSqlServer(builder.Configuration.GetConnectionString("AppString")), ServiceLifetime.Singleton);
+    //SQL Lite
+    //builder.Services.AddDbContext<AppDBContext>(db =>
+    //{
+    //    var HostContent = builder.Configuration[HostDefaults.ContentRootKey];
+    //    var path = Path.Combine(Path.GetDirectoryName(HostContent),"Context", builder.Configuration.GetConnectionString("DBName"));
+    //    db.UseSqlite($"Data Source={path}");
+    //});
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
     #region Register DB Services
-    builder.Services.AddScoped<SSAPI.Repository.Implementation.EmployeeManagement.MstUserServices, UserService>();
+    builder.Services.AddScoped<IMstUser, MstUserService>();
     //builder.Services.AddScoped<IMstEmployee, MstEmployeeService>();
 
     #endregion
