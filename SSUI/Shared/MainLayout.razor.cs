@@ -44,7 +44,7 @@ namespace SSUI.Shared
                 if(!loginUser.Success)
                 {
                     PageLoad = true;
-                    navigation.NavigateTo("/login", true);
+                    navigation.NavigateTo("login", true);
                 }
                 else 
                 {
