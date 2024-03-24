@@ -185,7 +185,17 @@
                                 </MudCardContent>
 
                             <div class="buttonspace">
-                                <MudButton Class="gradient-button" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Sign In</MudButton>
+                                <MudButton Disabled=IsProcessing Class="gradient-button" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
+                                    @if (IsProcessing)
+                                    {
+                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                        <MudText Class="ms-2" Color="Color.Primary">Authenticating...</MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText>Log In</MudText>
+                                    }
+                                </MudButton>
                             </div>
                         </EditForm>
                       

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using SharedLibrary.Model.EmployeeManagement;
 using SharedLibrary.ViewModel;
+using System.Diagnostics;
 
 namespace SSUI.Pages.EmployeeManagement
 {
@@ -11,6 +12,7 @@ namespace SSUI.Pages.EmployeeManagement
         #region Variable
         
         bool PageLoad = false;
+        bool IsProcessing = false;
         MstUser user = new();
         vmLogin model = new();
 
@@ -42,6 +44,7 @@ namespace SSUI.Pages.EmployeeManagement
         
         private async Task PostSubmit()
         {
+            IsProcessing = true;
             try
             {
                 //await Task.Delay(1000);
@@ -50,6 +53,7 @@ namespace SSUI.Pages.EmployeeManagement
                 if (oViewModel is null)
                 {
                     oToast.Add("Check your entered credentials", Severity.Error);
+                    IsProcessing = false;
                 }
                 else
                 {
@@ -57,12 +61,14 @@ namespace SSUI.Pages.EmployeeManagement
                     await oStorage.SetAsync("userinfo", oViewModel.ValidatedUser);
                     oToast.Add("You have login successfully.", Severity.Success);
                     await Task.Delay(2000);
+                    IsProcessing = false;
                     oNavigation.NavigateTo("dashboard", true);
                 }
             }
             catch(Exception ex)
             {
                 logger.LogError(ex, ex.Message);
+                IsProcessing = false;
             }
         }
 
