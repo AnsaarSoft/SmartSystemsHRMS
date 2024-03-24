@@ -1,0 +1,154 @@
+﻿<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(179.4deg, rgb(12, 20, 69) -16.9%, rgb(71, 30, 84) 119.9%);
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        width: 99vw;
+    }
+
+    .page-layout {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .app-info {
+        text-align: center;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+        .app-info h1 {
+            font-size: 70px;
+        }
+
+        .app-info p {
+            font-size: 25px;
+            margin-left: -160px;
+        }
+
+    .app-title {
+        display: flex;
+        align-items: center;
+    }
+
+        .app-title img {
+            margin-left: 50px;
+            margin-top: -60px;
+            margin-right: 10px;
+        }
+
+    .login {
+        padding: 50px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .sign-in-card {
+        background: #fff;
+        height: 90vh;
+        width: 80vh;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .sign-in-card-top h3 {
+        font-size: 30px;
+        font-weight: 500;
+        padding-left: 20px;
+    }
+
+    .sign-in-card-mid {
+        width: 80%;
+    }
+
+    .sign-in-card-bottom {
+        width: 80%;
+    }
+
+    .sign-in-card-mid input {
+        border: none;
+        border-bottom: 2px solid #ccc;
+        border-radius: 0;
+        margin-top: 15px;
+        height: 60px;
+        padding: 10px;
+        box-sizing: border-box;
+        outline: none;
+        width: 100%;
+    }
+
+        .sign-in-card-mid input:focus {
+            border-bottom-color: purple;
+        }
+
+    .forgot-password {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .gradient-button {
+        background: linear-gradient(179.4deg, rgb(43, 51, 104) -16.9%, rgb(71, 30, 84) 119.9%);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+        .gradient-button:hover {
+            opacity: 0.9;
+        }
+
+</style>
+<body>
+    <div class="page-layout h-100 row">
+        <div class="app-info container h-100 col-md-6">
+            <div class="app-title">
+                <img src="manager.png" alt="Manager" width="120">
+                <h1>SmartHRMS</h1>
+            </div>
+            <p>Management made simple!</p>
+        </div>
+        <div class="login container h-100 col-md-6">
+            <div class="sign-in-card">
+                <div class="sign-in-card-top">
+                    <image src="login-pic.png" width="140"></image>
+                    <h3>Sign-In</h3>
+                </div>
+                <div class="sign-in-card-mid">
+                    <div class="form-group">
+                        <input type="text" id="password" placeholder="Enter Username">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Enter password">
+                    </div>
+                    <div class="form-group text-right">
+                        <!-- Align the content to the right -->
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                </div>
+                <div class="sign-in-card-bottom">
+                    <button class="gradient-button">Sign In</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
