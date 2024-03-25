@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using SharedLibrary.Model.EmployeeManagement;
 using SharedLibrary.ViewModel;
-using System.Diagnostics;
 
 namespace SSUI.Pages.EmployeeManagement
 {
     public partial class LoginPage
     {
         #region Variable
-        
+
         bool PageLoad = false;
         bool IsProcessing = false;
         MstUser user = new();
@@ -22,7 +21,7 @@ namespace SSUI.Pages.EmployeeManagement
         [Inject] ILogger<LoginPage> logger { get; set; }
         [Inject] IUser oUserService { get; set; }
         [Inject] ISnackbar oToast { get; set; }
-        [Inject] NavigationManager oNavigation {  get; set; }
+        [Inject] NavigationManager oNavigation { get; set; }
         [Inject] ProtectedLocalStorage oStorage { get; set; }
         #endregion
 
@@ -36,19 +35,19 @@ namespace SSUI.Pages.EmployeeManagement
                 await Task.Delay(1000);
                 PageLoad = true;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 logger.LogError(ex, ex.Message);
             }
         }
-        
+
         private async Task PostSubmit()
         {
             IsProcessing = true;
             try
             {
                 //await Task.Delay(1000);
-                
+                //wait.....
                 var oViewModel = await oUserService.ValidateUser(model);
                 if (oViewModel is null)
                 {
@@ -65,7 +64,7 @@ namespace SSUI.Pages.EmployeeManagement
                     oNavigation.NavigateTo("dashboard", true);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex, ex.Message);
                 IsProcessing = false;

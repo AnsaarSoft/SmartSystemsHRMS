@@ -1,0 +1,222 @@
+﻿<style>
+
+    .sidebar {
+        background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
+        color: white;
+        width: 65px;
+        overflow: hidden;
+        transition: 0.5s;
+        height: 100vh;
+    }
+
+        .sidebar:hover {
+            width: 250px;
+        }
+
+    .main-menu {
+        position: relative;
+        height: 100vh;
+        margin-left: -30px;
+    }
+
+    .sidebar ul li {
+        list-style: none;
+    }
+
+        .sidebar ul li a {
+            position: relative;
+            display: flex;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+            .sidebar ul li a .icon {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+
+            .sidebar ul li a .text {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-width: 60px;
+                height: 60px;
+                font-size: 18px;
+                margin-left: 15px;
+            }
+
+    .website-logo {
+        margin-bottom: 40px;
+        margin-inline: 6px;
+        margin-top: 10px;
+    }
+
+    .nav-bar-top-text {
+        margin-left: 10px;
+        white-space: nowrap;
+        margin-top: 6px;
+        font-size: 24px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .nav-bar-top {
+        display: flex;
+    }
+
+        .nav-bar-top img {
+            height: 30px;
+            width: 30px;
+        }
+
+    #dropdown {
+        display: none;
+        margin-top: 6px;
+        margin-left: -30px;
+    }
+
+        #dropdown li:hover {
+            width: 140px;
+            cursor: pointer;
+        }
+
+    .arrow {
+        display: none;
+        position: absolute;
+        top: 50%; /* Position arrow vertically in the middle */
+        transform: translateY(-50%) rotate(180deg); /* Center arrow vertically */
+        right: 10px; /* Adjust distance between arrow and text */
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent; /* Adjust arrow size as needed */
+        border-right: 5px solid transparent; /* Adjust arrow size as needed */
+        border-bottom: 5px solid #ffffff; /* Adjust arrow color */
+    }
+
+    .main-menu li:hover .arrow {
+        display: block;
+        border-bottom: 5px solid #000;
+        transition: 0.5s;
+    }
+
+
+    .main-menu li:hover {
+        background: rgb(255, 255, 255);
+        color: black;
+        width: 200px;
+        margin-left: 10px;
+        border-radius: 10px;
+        transition: 1.5s;
+        cursor:pointer;
+    }
+
+    .rotated {
+        transform: rotate(360deg);
+        margin-top: -3px;
+    }
+
+    .sidebar:hover .arrow {
+        display: block; /* Show the arrow when hovering over the sidebar */
+    }
+
+    .website-logo a {
+        text-decoration: none;
+    }
+
+    .main-icon img {
+        width: 50px;
+        height: 50px;
+    }
+
+    hr{
+        margin-top:5px;
+    }
+</style>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+    function toggleDropdown() {
+        var dropdown = document.getElementById("dropdown");
+        var arrow = document.querySelector(".arrow");
+
+        // Toggle the display of the dropdown
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+
+        // Rotate the arrow by 180 degrees
+        arrow.classList.toggle("rotated");
+    }
+</script>
+<div class="sidebar">
+    <div class="website-logo">
+        <a class="nav-bar-top">
+            <span class="icon main-icon"><img src="Static-Images/supply.png" height="50" width="50" /></span>
+            <span class="nav-bar-top-text">SmartHRMS</span>
+            
+        </a>
+        @* <hr /> *@
+    </div>
+    <ul class="main-menu">
+
+        <li>
+            <a onclick="toggleDropdown()">
+                <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                <span class="text">Home</span>
+                <span class="arrow"></span>
+            </a>
+            <div id="dropdown">
+                <ul>
+                    <li>
+                        <a>
+                            <span class="icon"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></span>
+                            <span class="text">Messages</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="icon"><ion-icon name="language-outline"></ion-icon></span>
+                            <span class="text">Languages</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="icon"><ion-icon name="bookmark-outline"></ion-icon></span>
+                            <span class="text">Bookmark</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a>
+                <span class="icon"><ion-icon name="pie-chart-outline"></ion-icon></span>
+                <span class="text">Analytics</span>
+            </a>
+        </li>
+        <li>
+            <a>
+                <span class="icon"><ion-icon name="albums-outline"></ion-icon></span>
+                <span class="text">Order</span>
+            </a>
+
+        </li>
+        <li>
+            <a>
+                <span class="icon"><ion-icon name="bag-outline"></ion-icon></span>
+                <span class="text">Inventory</span>
+            </a>
+        </li>
+        <li>
+            <a>
+                <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
+                <span class="text">Settings</span>
+            </a>
+        </li>
+       
+    </ul>
+</div>

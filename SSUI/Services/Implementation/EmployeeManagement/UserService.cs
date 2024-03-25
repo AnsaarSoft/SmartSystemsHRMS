@@ -18,16 +18,17 @@
                 request.Content = new StringContent(stringUser);
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
+                //this response returning bad request.....
                 var response = await client.SendAsync(request);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
                     var oUser = JsonConvert.DeserializeObject<vmLogin>(stringContent);
-                    
+
                     return oUser;
                 }
-                
+
                 return null;
             }
             catch (Exception ex)
