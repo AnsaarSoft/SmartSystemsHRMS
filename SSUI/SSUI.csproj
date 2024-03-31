@@ -26,6 +26,9 @@
   <ItemGroup>
     <Folder Include="Pages\OrganizationManagement\" />
     <Folder Include="Pages\SystemManagement\" />
+    <Folder Include="wwwroot\ApplicationFiles\css\" />
+    <Folder Include="wwwroot\ApplicationFiles\js\" />
+    <Folder Include="wwwroot\UserFiles\" />
   </ItemGroup>
 
 </Project>
