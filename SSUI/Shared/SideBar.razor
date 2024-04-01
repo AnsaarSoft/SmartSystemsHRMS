@@ -69,6 +69,9 @@
 
     .nav-bar-top {
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
         .nav-bar-top img {
@@ -131,8 +134,8 @@
     }
 
     .main-icon img {
-        width: 50px;
-        height: 50px;
+        width: 120px;
+        height: 120px;
     }
 
     hr{
@@ -170,13 +173,16 @@
         const closebtn = document.getElementById('close');
         const sidebar = document.getElementById('sidebar');
         const arrow = document.getElementById('arrow');
-        const top = document.getElementById('top-heading');
+        const top = document.getElementById('nav-bar-top-text');
+        const Pic = document.getElementById('Center-Pic');
 
         sidebar.style.width = '250px';
         arrow.style.display = 'block';
         openbtn.style.display = 'none';
         closebtn.style.display = 'block';
         top.style.display = 'block';
+        Pic.style.width = "120px";
+        Pic.style.height = "120px";
     }
 
     function toggleCloseBtn() {
@@ -186,13 +192,17 @@
         const sidebar = document.getElementById('sidebar');
         const arrow = document.getElementById('arrow');
 
-        const top = document.getElementById('top-heading');
+        const top = document.getElementById('nav-bar-top-text');
+
+        const Pic = document.getElementById('Center-Pic');
 
         sidebar.style.width = '65px';
         arrow.style.display = 'none';
         openbtn.style.display = 'block';
         closebtn.style.display = 'none';
         top.style.display = 'none';
+        Pic.style.width = "50px";
+        Pic.style.height = "50px";
     }
 
     function toggleDropdown() {
@@ -220,8 +230,8 @@
 
      <div class="website-logo">
         <a class="nav-bar-top">
-            <span class="icon main-icon"><img src="Static-Images/supply.png" height="50" width="50" /></span>
-            <span class="nav-bar-top-text">SmartHRMS</span>          
+            <span class="icon main-icon"><img id="Center-Pic" src="Static-Images/supply.png" height="50" width="50" /></span>
+            <span class="nav-bar-top-text" id="nav-bar-top-text">SmartHRMS</span>
         </a>
        
         </div>
