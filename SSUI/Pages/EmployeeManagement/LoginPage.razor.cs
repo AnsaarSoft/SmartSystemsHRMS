@@ -45,7 +45,6 @@ namespace SSUI.Pages.EmployeeManagement
             try
             {
                 //await Task.Delay(1000);
-                
                 var oViewModel = await oUserService.ValidateUser(model);
                 if (oViewModel is null)
                 {

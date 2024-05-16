@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Server.Repository.Service.Employee;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
