@@ -5,7 +5,7 @@
     #dashboard-top{
         width:100%;
         height:30vh;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         border-radius: 20px;
         padding: 15px;
         background: #D8BFD8;
@@ -15,9 +15,23 @@
         width: 100%;
         height: 50vh;
         border-radius: 20px;
-        overflow-y:scroll;
-        padding: 15px;
+/*         overflow-y:hidden;
+ */        padding: 15px;
         background: #D8BFD8;
+    }
+    #switch-fix{
+        display:flex;
+        margin-top: 15px;
+    }
+
+    .form-switch{
+        margin-left:20px;
+    }
+
+    #dashboard-bottom .mud-table {
+        height: 100%;
+        overflow-y: scroll;
+        border-radius:20px;
     }
 </style>
 <PageTitle>Dashboard</PageTitle>
@@ -35,11 +49,14 @@
         <div class="form-group">         
             <InputText id="title" @bind-Value="formData.Title" class="form-control" placeholder="Title" />
         </div>
-        
-        <div class="form-group form-switch">
+        <div id="switch-fix" class="form-group">
             <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
-            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked @bind-value="formData.Status">
+            <div class="form-group form-switch">
+                @*             <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
+                *@            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked @bind-value="formData.Status">
+            </div>
         </div>
+        
 
         <div class="d-flex justify-content-start mt-3">
             <button type="button" class="btn btn-secondary mr-2" @onclick="ClearForm">Clear</button>
@@ -47,8 +64,8 @@
         </div>
     </EditForm>
 </div>
-<div id="dashboard-bottom">
-    <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<Element,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
+<div id="dashboard-bottom" class="table-container">
+    <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<Element,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1" Virtualize="true" FixedHeader="true" FixedFooter="true" Height="63%">
         <ToolBarContent>
             <MudText Typo="Typo.h6">Periodic Elements</MudText>
             <MudSpacer />
@@ -61,6 +78,7 @@
             <MudTh>Position</MudTh>
             <MudTh>Molar mass</MudTh>
         </HeaderContent>
+       
         <RowTemplate>
             <MudTd DataLabel="Nr">@context.Number</MudTd>
             <MudTd DataLabel="Sign">@context.Sign</MudTd>
