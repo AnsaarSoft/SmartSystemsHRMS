@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SSAPI.Migrations
 {
-    public partial class DBShift : Migration
+    public partial class version2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,12 +18,20 @@ namespace SSAPI.Migrations
                 table: "MstUsers");
 
             migrationBuilder.DropForeignKey(
+                name: "FK_MstUsers_MstEmployee_EmployeeId",
+                table: "MstUsers");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_MstUsers_MstUnit_UnitId",
                 table: "MstUsers");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_MstUnit",
                 table: "MstUnit");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_MstEmployee",
+                table: "MstEmployee");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_MstCompany",
@@ -37,6 +45,10 @@ namespace SSAPI.Migrations
             migrationBuilder.RenameTable(
                 name: "MstUnit",
                 newName: "MstUnits");
+
+            migrationBuilder.RenameTable(
+                name: "MstEmployee",
+                newName: "MstEmployees");
 
             migrationBuilder.RenameTable(
                 name: "MstCompany",
@@ -53,6 +65,11 @@ namespace SSAPI.Migrations
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
+                name: "PK_MstEmployees",
+                table: "MstEmployees",
+                column: "Id");
+
+            migrationBuilder.AddPrimaryKey(
                 name: "PK_MstCompanies",
                 table: "MstCompanies",
                 column: "Id");
@@ -63,10 +80,10 @@ namespace SSAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    FlgHead = table.Column<bool>(type: "bit", nullable: false),
-                    FlgForm = table.Column<bool>(type: "bit", nullable: false),
+                    flgHead = table.Column<bool>(type: "bit", nullable: false),
+                    flgForm = table.Column<bool>(type: "bit", nullable: false),
                     FormUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    ParentFormId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentFormId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormIcon = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     flgActive = table.Column<bool>(type: "bit", nullable: false),
                     flgDelete = table.Column<bool>(type: "bit", nullable: false),
@@ -85,7 +102,7 @@ namespace SSAPI.Migrations
                         column: x => x.ParentFormId,
                         principalTable: "CfgMenus",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,13 +153,13 @@ namespace SSAPI.Migrations
                         column: x => x.CompanyId,
                         principalTable: "MstCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstBanks_MstUnits_UnitId",
                         column: x => x.UnitId,
                         principalTable: "MstUnits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,13 +187,13 @@ namespace SSAPI.Migrations
                         column: x => x.CompanyId,
                         principalTable: "MstCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstBranches_MstUnits_UnitId",
                         column: x => x.UnitId,
                         principalTable: "MstUnits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,13 +241,13 @@ namespace SSAPI.Migrations
                         column: x => x.CompanyId,
                         principalTable: "MstCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstDepartments_MstUnits_UnitId",
                         column: x => x.UnitId,
                         principalTable: "MstUnits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -258,13 +275,13 @@ namespace SSAPI.Migrations
                         column: x => x.CompanyId,
                         principalTable: "MstCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstDesignations_MstUnits_UnitId",
                         column: x => x.UnitId,
                         principalTable: "MstUnits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -289,11 +306,11 @@ namespace SSAPI.Migrations
                 {
                     table.PrimaryKey("PK_MstEmpAttachments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MstEmpAttachments_MstEmployee_EmployeeId",
+                        name: "FK_MstEmpAttachments_MstEmployees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "MstEmployee",
+                        principalTable: "MstEmployees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -319,11 +336,11 @@ namespace SSAPI.Migrations
                 {
                     table.PrimaryKey("PK_MstEmpEducations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MstEmpEducations_MstEmployee_EmployeeId",
+                        name: "FK_MstEmpEducations_MstEmployees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "MstEmployee",
+                        principalTable: "MstEmployees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -348,11 +365,11 @@ namespace SSAPI.Migrations
                 {
                     table.PrimaryKey("PK_MstEmpExperiences", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MstEmpExperiences_MstEmployee_EmployeeId",
+                        name: "FK_MstEmpExperiences_MstEmployees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "MstEmployee",
+                        principalTable: "MstEmployees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -380,13 +397,13 @@ namespace SSAPI.Migrations
                         column: x => x.CompanyId,
                         principalTable: "MstCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstGrades_MstUnits_UnitId",
                         column: x => x.UnitId,
                         principalTable: "MstUnits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -435,13 +452,13 @@ namespace SSAPI.Migrations
                         column: x => x.CompanyId,
                         principalTable: "MstCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstLocations_MstUnits_UnitId",
                         column: x => x.UnitId,
                         principalTable: "MstUnits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -451,9 +468,9 @@ namespace SSAPI.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FormId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FlgView = table.Column<bool>(type: "bit", nullable: false),
-                    FlgEdit = table.Column<bool>(type: "bit", nullable: false),
-                    FlgAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    flgView = table.Column<bool>(type: "bit", nullable: false),
+                    flgEdit = table.Column<bool>(type: "bit", nullable: false),
+                    flgAdmin = table.Column<bool>(type: "bit", nullable: false),
                     flgActive = table.Column<bool>(type: "bit", nullable: false),
                     flgDelete = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -471,13 +488,13 @@ namespace SSAPI.Migrations
                         column: x => x.FormId,
                         principalTable: "CfgMenus",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CfgRoleDetails_CfgRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "CfgRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -486,7 +503,7 @@ namespace SSAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    BankId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BankId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UnitId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     flgActive = table.Column<bool>(type: "bit", nullable: false),
@@ -506,19 +523,19 @@ namespace SSAPI.Migrations
                         column: x => x.BankId,
                         principalTable: "MstBanks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstBankBranches_MstCompanies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "MstCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstBankBranches_MstUnits_UnitId",
                         column: x => x.UnitId,
                         principalTable: "MstUnits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -544,7 +561,8 @@ namespace SSAPI.Migrations
                         name: "FK_MstCities_MstCountries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "MstCountries",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -570,23 +588,23 @@ namespace SSAPI.Migrations
                 {
                     table.PrimaryKey("PK_MstEmpDependents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MstEmpDependents_MstEmployee_EmployeeId",
+                        name: "FK_MstEmpDependents_MstEmployees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "MstEmployee",
+                        principalTable: "MstEmployees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MstEmpDependents_MstLists_RelationId",
                         column: x => x.RelationId,
                         principalTable: "MstLists",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "MstUsers",
                 columns: new[] { "Id", "CompanyId", "CreatedBy", "CreatedDate", "Email", "EmployeeId", "Password", "UnitId", "UpdatedBy", "UpdatedDate", "UserCode", "UserType", "cAppStamp", "flgActive", "flgDelete", "uAppStamp" },
-                values: new object[] { new Guid("d43bbf9e-515f-47ae-bab0-743f0a708b80"), null, "Auto", new DateTime(2024, 3, 17, 11, 8, 40, 751, DateTimeKind.Local).AddTicks(8400), "", null, "super@123", null, "Auto", new DateTime(2024, 3, 17, 11, 8, 40, 751, DateTimeKind.Local).AddTicks(8409), "manager", 1, "Auto", true, false, "Auto" });
+                values: new object[] { new Guid("de248372-10d5-474b-8e8e-02c45c3b4504"), null, "Auto", new DateTime(2024, 5, 19, 8, 44, 16, 950, DateTimeKind.Local).AddTicks(7898), "", null, "super@123", null, "Auto", new DateTime(2024, 5, 19, 8, 44, 16, 950, DateTimeKind.Local).AddTicks(7911), "manager", 1, "Auto", true, false, "Auto" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CfgMenus_ParentFormId",
@@ -713,21 +731,32 @@ namespace SSAPI.Migrations
                 table: "MstUnits",
                 column: "CompanyId",
                 principalTable: "MstCompanies",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_MstUsers_MstCompanies_CompanyId",
                 table: "MstUsers",
                 column: "CompanyId",
                 principalTable: "MstCompanies",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_MstUsers_MstEmployees_EmployeeId",
+                table: "MstUsers",
+                column: "EmployeeId",
+                principalTable: "MstEmployees",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_MstUsers_MstUnits_UnitId",
                 table: "MstUsers",
                 column: "UnitId",
                 principalTable: "MstUnits",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -738,6 +767,10 @@ namespace SSAPI.Migrations
 
             migrationBuilder.DropForeignKey(
                 name: "FK_MstUsers_MstCompanies_CompanyId",
+                table: "MstUsers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_MstUsers_MstEmployees_EmployeeId",
                 table: "MstUsers");
 
             migrationBuilder.DropForeignKey(
@@ -800,17 +833,25 @@ namespace SSAPI.Migrations
                 table: "MstUnits");
 
             migrationBuilder.DropPrimaryKey(
+                name: "PK_MstEmployees",
+                table: "MstEmployees");
+
+            migrationBuilder.DropPrimaryKey(
                 name: "PK_MstCompanies",
                 table: "MstCompanies");
 
             migrationBuilder.DeleteData(
                 table: "MstUsers",
                 keyColumn: "Id",
-                keyValue: new Guid("d43bbf9e-515f-47ae-bab0-743f0a708b80"));
+                keyValue: new Guid("de248372-10d5-474b-8e8e-02c45c3b4504"));
 
             migrationBuilder.RenameTable(
                 name: "MstUnits",
                 newName: "MstUnit");
+
+            migrationBuilder.RenameTable(
+                name: "MstEmployees",
+                newName: "MstEmployee");
 
             migrationBuilder.RenameTable(
                 name: "MstCompanies",
@@ -824,6 +865,11 @@ namespace SSAPI.Migrations
             migrationBuilder.AddPrimaryKey(
                 name: "PK_MstUnit",
                 table: "MstUnit",
+                column: "Id");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_MstEmployee",
+                table: "MstEmployee",
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
@@ -848,6 +894,13 @@ namespace SSAPI.Migrations
                 table: "MstUsers",
                 column: "CompanyId",
                 principalTable: "MstCompany",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_MstUsers_MstEmployee_EmployeeId",
+                table: "MstUsers",
+                column: "EmployeeId",
+                principalTable: "MstEmployee",
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(

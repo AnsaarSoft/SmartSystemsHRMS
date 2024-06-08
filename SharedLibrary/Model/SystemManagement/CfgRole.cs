@@ -27,5 +27,7 @@
         public string cAppStamp { get; set; } = string.Empty;
         [StringLength(20)]
         public string uAppStamp { get; set; } = string.Empty;
+
+        public virtual ICollection<CfgRoleDetail> RoleDetails { get; set; }
     }
 }

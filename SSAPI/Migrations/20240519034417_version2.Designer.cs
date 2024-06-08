@@ -12,8 +12,8 @@ using SSAPI.Context;
 namespace SSAPI.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240317060841_DBShift")]
-    partial class DBShift
+    [Migration("20240519034417_version2")]
+    partial class version2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,7 +88,7 @@ namespace SSAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BankId")
+                    b.Property<Guid?>("BankId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CompanyId")
@@ -963,7 +963,7 @@ namespace SSAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MstEmployee");
+                    b.ToTable("MstEmployees");
                 });
 
             modelBuilder.Entity("SharedLibrary.Model.EmployeeManagement.MstUser", b =>
@@ -1044,13 +1044,13 @@ namespace SSAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d43bbf9e-515f-47ae-bab0-743f0a708b80"),
+                            Id = new Guid("de248372-10d5-474b-8e8e-02c45c3b4504"),
                             CreatedBy = "Auto",
-                            CreatedDate = new DateTime(2024, 3, 17, 11, 8, 40, 751, DateTimeKind.Local).AddTicks(8400),
+                            CreatedDate = new DateTime(2024, 5, 19, 8, 44, 16, 950, DateTimeKind.Local).AddTicks(7898),
                             Email = "",
                             Password = "super@123",
                             UpdatedBy = "Auto",
-                            UpdatedDate = new DateTime(2024, 3, 17, 11, 8, 40, 751, DateTimeKind.Local).AddTicks(8409),
+                            UpdatedDate = new DateTime(2024, 5, 19, 8, 44, 16, 950, DateTimeKind.Local).AddTicks(7911),
                             UserCode = "manager",
                             UserType = 1,
                             cAppStamp = "Auto",
@@ -1219,12 +1219,6 @@ namespace SSAPI.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("FlgForm")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FlgHead")
-                        .HasColumnType("bit");
-
                     b.Property<string>("FormIcon")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -1235,7 +1229,7 @@ namespace SSAPI.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<Guid>("ParentFormId")
+                    b.Property<Guid?>("ParentFormId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
@@ -1260,6 +1254,12 @@ namespace SSAPI.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("flgDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("flgForm")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("flgHead")
                         .HasColumnType("bit");
 
                     b.Property<string>("uAppStamp")
@@ -1349,15 +1349,6 @@ namespace SSAPI.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("FlgAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FlgEdit")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FlgView")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("FormId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1380,7 +1371,16 @@ namespace SSAPI.Migrations
                     b.Property<bool>("flgActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("flgAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("flgDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("flgEdit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("flgView")
                         .HasColumnType("bit");
 
                     b.Property<string>("uAppStamp")
@@ -1402,13 +1402,13 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstUnit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -1421,19 +1421,18 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.Master.MstBank", "Bank")
                         .WithMany()
                         .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstUnit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Bank");
@@ -1448,13 +1447,13 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstUnit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -1466,7 +1465,8 @@ namespace SSAPI.Migrations
                 {
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.Master.MstCountry", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryId");
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Country");
                 });
@@ -1476,13 +1476,13 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstUnit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -1495,13 +1495,13 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstUnit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -1514,13 +1514,13 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstUnit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -1533,13 +1533,13 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstUnit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -1552,7 +1552,7 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.MstEmployee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -1563,13 +1563,13 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.MstEmployee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.Master.MstList", "Relation")
                         .WithMany()
                         .HasForeignKey("RelationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -1582,7 +1582,7 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.MstEmployee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -1593,7 +1593,7 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.MstEmployee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -1603,15 +1603,18 @@ namespace SSAPI.Migrations
                 {
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.MstEmployee", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstUnit", "Unit")
                         .WithMany()
-                        .HasForeignKey("UnitId");
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Company");
 
@@ -1624,7 +1627,8 @@ namespace SSAPI.Migrations
                 {
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Company");
                 });
@@ -1634,8 +1638,7 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.SystemManagement.CfgMenu", "ParentForm")
                         .WithMany()
                         .HasForeignKey("ParentFormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ParentForm");
                 });
@@ -1645,18 +1648,23 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.SystemManagement.CfgMenu", "Form")
                         .WithMany()
                         .HasForeignKey("FormId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.SystemManagement.CfgRole", "Role")
-                        .WithMany()
+                        .WithMany("RoleDetails")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Form");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("SharedLibrary.Model.SystemManagement.CfgRole", b =>
+                {
+                    b.Navigation("RoleDetails");
                 });
 #pragma warning restore 612, 618
         }
