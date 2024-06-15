@@ -4,10 +4,10 @@
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly MstDepartmentService repo;
+        private readonly IMstDepartment repo;
         private readonly ILogger<DepartmentController> log;
 
-        public DepartmentController(MstDepartmentService repo, ILogger<DepartmentController> log)
+        public DepartmentController(IMstDepartment repo, ILogger<DepartmentController> log)
         {
             this.repo = repo;
             this.log = log;

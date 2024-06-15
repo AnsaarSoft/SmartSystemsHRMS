@@ -1,4 +1,5 @@
-﻿<style>
+﻿@inject NavigationManager NavigationManager
+<style>
 
     .sidebar {
         background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
@@ -255,13 +256,13 @@
                     <li>
                         <a>
                             <span class="icon"><ion-icon name="language-outline"></ion-icon></span>
-                            <span class="text">Languages</span>
+                            <span class="text">Position</span>
                         </a>
                     </li>
                     <li>
                         <a>
                             <span class="icon"><ion-icon name="bookmark-outline"></ion-icon></span>
-                            <span class="text">Bookmark</span>
+                            <span class="text">Department</span>
                         </a>
                     </li>
                 </ul>
@@ -270,13 +271,13 @@
         <li>
             <a>
                 <span class="icon"><ion-icon name="pie-chart-outline"></ion-icon></span>
-                <span class="text">Analytics</span>
+                <span class="text">Position</span>
             </a>
         </li>
-        <li>
+        <li @onclick="Goto_Departments">
             <a>
                 <span class="icon"><ion-icon name="albums-outline"></ion-icon></span>
-                <span class="text">Order</span>
+                <span class="text">Department</span>
             </a>
 
         </li>
@@ -295,3 +296,9 @@
        
     </ul>
 </div>
+@code{
+    private void Goto_Departments()
+    {
+        NavigationManager.NavigateTo("/department");
+    }
+}

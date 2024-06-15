@@ -20,6 +20,7 @@ try
 
     #region Register DB Services
     builder.Services.AddScoped<IMstUser, MstUserService>();
+    builder.Services.AddScoped<IMstDepartment, MstDepartmentService>();
     //builder.Services.AddScoped<IMstEmployee, MstEmployeeService>();
 
     #endregion

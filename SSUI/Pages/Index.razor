@@ -8,7 +8,7 @@
         margin-bottom: 10px;
         border-radius: 20px;
         padding: 15px;
-        background: #D8BFD8;
+        background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
     }
 
     #dashboard-bottom {
@@ -17,7 +17,7 @@
         border-radius: 20px;
 /*         overflow-y:hidden;
  */        padding: 15px;
-        background: #D8BFD8;
+        background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
     }
     #switch-fix{
         display:flex;
@@ -50,7 +50,7 @@
             <InputText id="title" @bind-Value="formData.Title" class="form-control" placeholder="Title" />
         </div>
         <div id="switch-fix" class="form-group">
-            <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
+            <label class="form-check-label" for="flexSwitchCheckChecked" style="color:white;">Status</label>
             <div class="form-group form-switch">
                 @*             <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
                 *@            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked @bind-value="formData.Status">

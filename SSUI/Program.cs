@@ -1,3 +1,6 @@
+using SSUI.Services.Implementation.EmployeeManagement.Master;
+using SSUI.Services.Interface.EmployeeManagement.Master;
+
 var logger = LogManager.Setup().LoadConfigurationFromFile().GetCurrentClassLogger();
 try
 {
@@ -13,9 +16,12 @@ try
     builder.Services.AddServerSideBlazor();
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
-    
+    builder.Services.AddServerSideBlazor().AddCircuitOptions(option => { option.DetailedErrors = true; });
+
     //builder.Services.AddAuthorization();
     builder.Services.AddScoped<AuthenticationStateProvider, AppAuth>();
+    builder.Services.AddScoped<IDepartment, DepartmentService>();
+
     builder.Services.AddAuthorizationCore();
     //builder.Services.AddMudServices();
     builder.Services.AddMudServices(config =>
@@ -31,7 +37,8 @@ try
         config.SnackbarConfiguration.MaxDisplayedSnackbars = 1;
     });
 
-    builder.Services.AddHttpClient<IUser, UserService>(options => { options.BaseAddress = new Uri(ApiUrl +"user/"); });
+    builder.Services.AddHttpClient<IUser, UserService>(options => { options.BaseAddress = new Uri(ApiUrl + "user/"); });
+    builder.Services.AddHttpClient<IDepartment, DepartmentService>(options => { options.BaseAddress = new Uri(ApiUrl + "Department/"); });
 
 
     var app = builder.Build();
