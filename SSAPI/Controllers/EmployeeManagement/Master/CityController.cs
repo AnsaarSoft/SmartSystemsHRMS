@@ -80,5 +80,17 @@
                 return BadRequest(Messaging.ServerError);
             }
         }
+
+        [HttpPost("Add-City")]
+        public async Task<ActionResult> AddCity(MstCity InputData)
+        {
+            if (InputData == null)
+                return BadRequest();
+
+            bool result = await repo.AddCity(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
     }
 }

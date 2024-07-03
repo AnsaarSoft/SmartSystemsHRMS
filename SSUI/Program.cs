@@ -39,6 +39,7 @@ try
 
     builder.Services.AddHttpClient<IUser, UserService>(options => { options.BaseAddress = new Uri(ApiUrl + "user/"); });
     builder.Services.AddHttpClient<IDepartment, DepartmentService>(options => { options.BaseAddress = new Uri(ApiUrl + "Department/"); });
+    builder.Services.AddHttpClient<ICountry, CountryServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Country/"); });
 
 
     var app = builder.Build();

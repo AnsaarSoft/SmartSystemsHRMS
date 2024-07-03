@@ -7,7 +7,7 @@ try
     // Add services to the container.
     //SQL Server
     builder.Services.AddDbContext<AppDBContext>(db =>
-      db.UseSqlServer(builder.Configuration.GetConnectionString("AppString")), ServiceLifetime.Singleton);
+      db.UseSqlServer(builder.Configuration.GetConnectionString("AppString")), ServiceLifetime.Scoped);
     //SQL Lite
     //builder.Services.AddDbContext<AppDBContext>(db =>
     //{
@@ -21,6 +21,8 @@ try
     #region Register DB Services
     builder.Services.AddScoped<IMstUser, MstUserService>();
     builder.Services.AddScoped<IMstDepartment, MstDepartmentService>();
+    builder.Services.AddScoped<IMstCountry, MstCountryService>();
+
     //builder.Services.AddScoped<IMstEmployee, MstEmployeeService>();
 
     #endregion

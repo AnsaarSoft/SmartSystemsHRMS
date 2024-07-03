@@ -265,6 +265,12 @@
                             <span class="text">Department</span>
                         </a>
                     </li>
+                    <li>
+                        <a>
+                            <span class="icon"><ion-icon name="bookmark-outline"></ion-icon></span>
+                            <span class="text">Counties</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -278,6 +284,13 @@
             <a>
                 <span class="icon"><ion-icon name="albums-outline"></ion-icon></span>
                 <span class="text">Department</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_Countries">
+            <a>
+                <span class="icon"><ion-icon name="albums-outline"></ion-icon></span>
+                <span class="text">Countries</span>
             </a>
 
         </li>
@@ -300,5 +313,9 @@
     private void Goto_Departments()
     {
         NavigationManager.NavigateTo("/department");
+    }
+    private void Goto_Countries()
+    {
+        NavigationManager.NavigateTo("/countries");
     }
 }

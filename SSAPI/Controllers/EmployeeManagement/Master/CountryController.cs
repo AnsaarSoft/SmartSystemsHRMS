@@ -4,10 +4,10 @@
     [ApiController]
     public class CountryController : ControllerBase
     {
-        private readonly MstCountryService repo;
+        private readonly IMstCountry repo;
         private readonly ILogger<CountryController> log;
 
-        public CountryController(MstCountryService repo, ILogger<CountryController> log)
+        public CountryController(IMstCountry repo, ILogger<CountryController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,29 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+        [HttpPost("addcountry")]
+        public async Task<ActionResult> AddCountry(MstCountry InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddCountry(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatecountry")]
+        public async Task<ActionResult> UpdateCountry(MstCountry InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateCountry(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

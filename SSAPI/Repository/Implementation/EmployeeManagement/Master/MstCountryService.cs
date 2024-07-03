@@ -69,7 +69,9 @@
             try
             {
                 oRecords = await (from a in odb.MstCountries
+                                  where a.flgDelete == false
                                   select a).ToListAsync();
+
             }
             catch (Exception)
             {
