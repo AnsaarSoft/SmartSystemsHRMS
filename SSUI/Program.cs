@@ -1,5 +1,5 @@
+using SSUI.Services.Implementation.Administration;
 using SSUI.Services.Implementation.EmployeeManagement.Master;
-using SSUI.Services.Interface.EmployeeManagement.Master;
 
 var logger = LogManager.Setup().LoadConfigurationFromFile().GetCurrentClassLogger();
 try
@@ -40,7 +40,16 @@ try
     builder.Services.AddHttpClient<IUser, UserService>(options => { options.BaseAddress = new Uri(ApiUrl + "user/"); });
     builder.Services.AddHttpClient<IDepartment, DepartmentService>(options => { options.BaseAddress = new Uri(ApiUrl + "Department/"); });
     builder.Services.AddHttpClient<ICountry, CountryServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Country/"); });
-
+    builder.Services.AddHttpClient<ICompany, CompanyServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Company/"); });
+    builder.Services.AddHttpClient<IUnit, UnitServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Unit/"); });
+    builder.Services.AddHttpClient<IList, ListServices>(options => { options.BaseAddress = new Uri(ApiUrl + "List/"); });
+    builder.Services.AddHttpClient<IBank, BankServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Bank/"); });
+    builder.Services.AddHttpClient<IBankBranch, BankBranchServices>(options => { options.BaseAddress = new Uri(ApiUrl + "BankBranch/"); });
+    builder.Services.AddHttpClient<IBranch, BranchServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Branch/"); });
+    builder.Services.AddHttpClient<ICity, CityServices>(options => { options.BaseAddress = new Uri(ApiUrl + "City/"); });
+    builder.Services.AddHttpClient<IDesignation, DesignationServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Designation/"); });
+    builder.Services.AddHttpClient<IGrade, GradeServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Grade/"); });
+    builder.Services.AddHttpClient<ILocations, LocationServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Location/"); });
 
     var app = builder.Build();
 

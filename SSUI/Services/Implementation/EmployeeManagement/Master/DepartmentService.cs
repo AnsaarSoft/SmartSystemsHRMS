@@ -1,35 +1,30 @@
-﻿using SSUI.Services.Interface.EmployeeManagement.Master;
-
-namespace SSUI.Services.Implementation.EmployeeManagement.Master
+﻿namespace SSUI.Services.Implementation.EmployeeManagement.Master
 {
     public class DepartmentService : IDepartment
     {
 
         private readonly HttpClient client;
         private readonly ILogger<DepartmentService> logger;
-        public DepartmentService(HttpClient _client, ILogger<DepartmentService> log)
+
+        public CountryServices(HttpClient client, ILogger<DepartmentService> logger)
         {
-            client = _client;
-            logger = log;
+            this.client = client;
+            this.logger = logger;
         }
-        public async Task<List<vmMasterData>?> ListDepartments()
+
+        public async Task<vmMasterData?> EditCountry(string Id)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "getdepartments");
-                //var stringUser = JsonConvert.SerializeObject(user);
-                //request.Content = new StringContent(stringUser);
-                //request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"getcountry/{Id}");
 
-                //this response returning bad request.....
                 var response = await client.SendAsync(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
-                    var departments = JsonConvert.DeserializeObject<List<vmMasterData>>(stringContent);
-                    //departments = await client.GetFromJsonAsync<List<vmMasterData>>("api/department/getdepartments");
-                    return departments;
+                    var entities = JsonConvert.DeserializeObject<vmMasterData>(stringContent);
+                    return entities;
                 }
 
                 return null;
@@ -40,33 +35,84 @@ namespace SSUI.Services.Implementation.EmployeeManagement.Master
                 return null;
             }
         }
-        public async Task<vmMasterData?> AddDepartment(vmMasterData UserInput)
+        public async Task<List<vmMasterData>?> ListCountries()
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var request = new HttpRequestMessage(HttpMethod.Post, "validateuser");
-            //    var stringUser = JsonConvert.SerializeObject(user);
-            //    request.Content = new StringContent(stringUser);
-            //    request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "getcountries");
 
-            //    var response = await client.SendAsync(request);
+                var response = await client.SendAsync(request);
 
-            //    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            //    {
-            //        var stringContent = await response.Content.ReadAsStringAsync();
-            //        var oUser = JsonConvert.DeserializeObject<vmMasterData>(stringContent);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var stringContent = await response.Content.ReadAsStringAsync();
+                    var entities = JsonConvert.DeserializeObject<List<vmMasterData>>(stringContent);
+                    return entities;
+                }
 
-            //        return oUser;
-            //    }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return null;
+            }
+        }
+        public async Task<vmMasterData?> ModifyCountry(vmMasterData UserInput)
+        {
+            try
+            {
+                HttpRequestMessage request;
 
-            //    return null;
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.LogError(ex, ex.Message);
-            //    return null;
-            //}
+                if (UserInput.Id == "00000000-0000-0000-0000-000000000000")
+                {
+                    request = new HttpRequestMessage(HttpMethod.Post, "addcountry");
+
+                }
+                else
+                {
+                    request = new HttpRequestMessage(HttpMethod.Post, "updatecountry");
+                }
+
+                var stringContent = JsonConvert.SerializeObject(UserInput);
+                request.Content = new StringContent(stringContent);
+                request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+                var response = await client.SendAsync(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return UserInput;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return null;
+            }
+        }
+        public async Task<bool?> RemoveCountry(string Id)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"deletecountry/{Id}");
+
+                var response = await client.SendAsync(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return true;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return null;
+            }
         }
     }
 }

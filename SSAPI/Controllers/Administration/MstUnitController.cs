@@ -4,10 +4,10 @@
     [ApiController]
     public class MstUnitController : ControllerBase
     {
-        private readonly MstUnitService repo;
+        private readonly IMstUnit repo;
         private readonly ILogger<MstUnitController> log;
 
-        public MstUnitController(MstUnitService repo, ILogger<MstUnitController> log)
+        public MstUnitController(IMstUnit repo, ILogger<MstUnitController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,29 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+        [HttpPost("addunit")]
+        public async Task<ActionResult> AddUnit(MstUnit InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddUnit(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updateunit")]
+        public async Task<ActionResult> UpdateUnit(MstUnit InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateUnit(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

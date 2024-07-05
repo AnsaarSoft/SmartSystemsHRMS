@@ -4,10 +4,10 @@
     [ApiController]
     public class LocationController : ControllerBase
     {
-        private readonly MstLocationService repo;
+        private readonly IMstLocation repo;
         private readonly ILogger<LocationController> log;
 
-        public LocationController(MstLocationService repo, ILogger<LocationController> log)
+        public LocationController(IMstLocation repo, ILogger<LocationController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,30 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("addlocation")]
+        public async Task<ActionResult> AddLocation(MstLocation InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddLocation(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatelocation")]
+        public async Task<ActionResult> UpdateLocation(MstLocation InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateLocation(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

@@ -4,10 +4,10 @@
     [ApiController]
     public class DesignationController : ControllerBase
     {
-        private readonly MstDesignationService repo;
+        private readonly IMstDesignation repo;
         private readonly ILogger<DesignationController> log;
 
-        public DesignationController(MstDesignationService repo, ILogger<DesignationController> log)
+        public DesignationController(IMstDesignation repo, ILogger<DesignationController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,30 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("adddesignation")]
+        public async Task<ActionResult> AddDesignation(MstDesignation InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddDesignation(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatedesignation")]
+        public async Task<ActionResult> UpdateDesignation(MstDesignation InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateDesignation(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

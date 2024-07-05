@@ -4,10 +4,10 @@
     [ApiController]
     public class GradeController : ControllerBase
     {
-        private readonly MstGradeService repo;
+        private readonly IMstGrade repo;
         private readonly ILogger<GradeController> log;
 
-        public GradeController(MstGradeService repo, ILogger<GradeController> log)
+        public GradeController(IMstGrade repo, ILogger<GradeController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,30 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("addgrade")]
+        public async Task<ActionResult> AddGrade(MstGrade InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddGrade(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updategrade")]
+        public async Task<ActionResult> UpdateGrade(MstGrade InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateGrade(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

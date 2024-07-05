@@ -1,6 +1,8 @@
-﻿namespace SSUI.Services.Implementation.EmployeeManagement.Master
+﻿using SSUI.Services.Implementation.EmployeeManagement.Master;
+
+namespace SSUI.Services.Implementation.Administration
 {
-    public class CountryServices : ICountry
+    public class CompanyServices : ICompany
     {
         private readonly HttpClient client;
         private readonly ILogger<DepartmentService> logger;
@@ -113,7 +115,5 @@
                 return null;
             }
         }
-
     }
 }
-

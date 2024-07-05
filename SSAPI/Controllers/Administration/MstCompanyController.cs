@@ -4,10 +4,10 @@
     [ApiController]
     public class MstCompanyController : ControllerBase
     {
-        private readonly MstCompanyService repo;
+        private readonly IMstCompany repo;
         private readonly ILogger<MstCompanyController> log;
 
-        public MstCompanyController(MstCompanyService repo, ILogger<MstCompanyController> log)
+        public MstCompanyController(IMstCompany repo, ILogger<MstCompanyController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,30 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("addcompany")]
+        public async Task<ActionResult> AddCompany(MstCompany InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddCompany(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatecompany")]
+        public async Task<ActionResult> UpdateCompany(MstCompany InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateCompany(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

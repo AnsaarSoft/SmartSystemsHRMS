@@ -1,6 +1,6 @@
 ﻿namespace SSUI.Services.Implementation.EmployeeManagement.Master
 {
-    public class CountryServices : ICountry
+    public class BankBranchServices : IBankBranch
     {
         private readonly HttpClient client;
         private readonly ILogger<DepartmentService> logger;
@@ -113,7 +113,5 @@
                 return null;
             }
         }
-
     }
 }
-

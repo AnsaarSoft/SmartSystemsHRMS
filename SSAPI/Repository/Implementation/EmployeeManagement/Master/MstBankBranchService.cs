@@ -69,6 +69,7 @@
             try
             {
                 oRecords = await (from a in odb.MstBankBranches
+                                  where a.flgDelete == false
                                   select a).ToListAsync();
             }
             catch (Exception)

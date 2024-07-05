@@ -4,10 +4,10 @@
     [ApiController]
     public class BankBranchController : ControllerBase
     {
-        private readonly MstBankBranchService repo;
+        private readonly IMstBankBranch repo;
         private readonly ILogger<BankBranchController> log;
 
-        public BankBranchController(MstBankBranchService repo, ILogger<BankBranchController> log)
+        public BankBranchController(IMstBankBranch repo, ILogger<BankBranchController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,30 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("addbankbranch")]
+        public async Task<ActionResult> AddBankBranch(MstBankBranch InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddBankBranch(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatebankbranch")]
+        public async Task<ActionResult> UpdateBankBranch(MstBankBranch InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateBankBranch(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

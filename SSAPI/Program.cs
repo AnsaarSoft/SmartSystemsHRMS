@@ -22,6 +22,16 @@ try
     builder.Services.AddScoped<IMstUser, MstUserService>();
     builder.Services.AddScoped<IMstDepartment, MstDepartmentService>();
     builder.Services.AddScoped<IMstCountry, MstCountryService>();
+    builder.Services.AddScoped<IMstCompany, MstCompanyService>();
+    builder.Services.AddScoped<IMstList, MstListService>();
+    builder.Services.AddScoped<IMstBank, MstBankService>();
+    builder.Services.AddScoped<IMstBankBranch, MstBankBranchService>();
+    builder.Services.AddScoped<IMstBranch, MstBranchService>();
+    builder.Services.AddScoped<IMstCity, MstCityService>();
+    builder.Services.AddScoped<IMstDesignation, MstDesignationService>();
+    builder.Services.AddScoped<IMstGrade, MstGradeService>();
+    builder.Services.AddScoped<IMstLocation, MstLocationService>();
+    builder.Services.AddScoped<IMstUnit, MstUnitService>();
 
     //builder.Services.AddScoped<IMstEmployee, MstEmployeeService>();
 

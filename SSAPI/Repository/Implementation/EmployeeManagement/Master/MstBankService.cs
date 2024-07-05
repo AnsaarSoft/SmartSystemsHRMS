@@ -70,6 +70,7 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
             try
             {
                 oRecords = await (from a in odb.MstBanks
+                                  where a.flgDelete == false
                                   select a).ToListAsync();
             }
             catch (Exception)

@@ -80,5 +80,29 @@
                 return BadRequest(Messaging.ServerError);
             }
         }
+
+        [HttpPost("adddepartment")]
+        public async Task<ActionResult> AddDepartment(MstDepartment InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddDepartment(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatedepartment")]
+        public async Task<ActionResult> UpdateDepartment(MstDepartment InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateDepartment(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
     }
 }
