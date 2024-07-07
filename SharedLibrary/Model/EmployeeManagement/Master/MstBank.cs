@@ -1,6 +1,6 @@
 ﻿namespace SharedLibrary.Model.EmployeeManagement.Master
 {
-    public class MstBank 
+    public class MstBank
     {
         [Key, Required]
         public Guid Id { get; set; }
@@ -8,9 +8,9 @@
         [StringLength(50)]
         public string Title { get; set; } = string.Empty;
 
-        public MstUnit Unit { get; set; }
+        public MstUnit? Unit { get; set; }
 
-        public MstCompany Company { get; set; }
+        public MstCompany? Company { get; set; }
 
         public bool flgActive { get; set; } = true;
 

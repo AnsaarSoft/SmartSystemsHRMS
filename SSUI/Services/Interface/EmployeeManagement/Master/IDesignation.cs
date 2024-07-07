@@ -2,9 +2,9 @@
 {
     public interface IDesignation
     {
-        public Task<vmMasterData?> ModifyDesignation(vmMasterData UserInput);
-        public Task<List<vmMasterData>?> ListDesignations();
+        public Task<vmMasterDataDD?> ModifyDesignation(vmMasterDataDD UserInput);
+        public Task<List<vmMasterDataDD>?> ListDesignations();
         public Task<bool?> RemoveDesignation(string Id);
-        public Task<vmMasterData?> EditDesignation(string Id);
+        public Task<vmMasterDataDD?> EditDesignation(string Id);
     }
 }

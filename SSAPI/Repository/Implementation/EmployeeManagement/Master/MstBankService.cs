@@ -13,6 +13,10 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
             try
             {
                 if (oRecord is null) { return false; }
+
+                odb.Attach(oRecord.Company);
+                odb.Attach(oRecord.Unit);
+
                 odb.MstBanks.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -31,6 +35,14 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
                 {
                     return false;
                 }
+
+                var hasBankBranches = await odb.MstBankBranches.AnyAsync(x => x.Bank.Id == id);
+
+                if (hasBankBranches)
+                {
+                    return false;
+                }
+
                 var oRecord = await (from a in odb.MstBanks
                                      where a.Id == id
                                      select a).FirstOrDefaultAsync();
@@ -52,9 +64,10 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
             try
             {
                 if (id == Guid.Empty) { return oRecord; }
-                oRecord = await (from a in odb.MstBanks
-                                 where a.Id == id
-                                 select a).FirstOrDefaultAsync();
+                oRecord = await odb.MstBanks
+                           .Include(b => b.Company)
+                           .Include(b => b.Unit)
+                           .FirstOrDefaultAsync(a => a.Id == id);
 
                 return oRecord;
             }

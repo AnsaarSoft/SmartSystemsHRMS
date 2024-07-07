@@ -2,9 +2,9 @@
 {
     public interface ICompany
     {
-        public Task<vmMasterData?> ModifyCompany(vmMasterData UserInput);
-        public Task<List<vmMasterData>?> ListCompanies();
+        public Task<vmCompany?> ModifyCompany(vmCompany UserInput);
+        public Task<List<vmCompany>?> ListCompanies();
         public Task<bool?> RemoveCompany(string Id);
-        public Task<vmMasterData?> EditCompany(string Id);
+        public Task<vmCompany?> EditCompany(string Id);
     }
 }

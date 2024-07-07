@@ -1,30 +1,28 @@
-﻿using SSUI.Services.Implementation.EmployeeManagement.Master;
-
-namespace SSUI.Services.Implementation.Administration
+﻿namespace SSUI.Services.Implementation.Administration
 {
     public class CompanyServices : ICompany
     {
         private readonly HttpClient client;
-        private readonly ILogger<DepartmentService> logger;
+        private readonly ILogger<CompanyServices> logger;
 
-        public CountryServices(HttpClient client, ILogger<DepartmentService> logger)
+        public CompanyServices(HttpClient client, ILogger<CompanyServices> logger)
         {
             this.client = client;
             this.logger = logger;
         }
 
-        public async Task<vmMasterData?> EditCountry(string Id)
+        public async Task<vmCompany?> EditCompany(string Id)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, $"getcountry/{Id}");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"getcompany/{Id}");
 
                 var response = await client.SendAsync(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
-                    var entities = JsonConvert.DeserializeObject<vmMasterData>(stringContent);
+                    var entities = JsonConvert.DeserializeObject<vmCompany>(stringContent);
                     return entities;
                 }
 
@@ -36,18 +34,18 @@ namespace SSUI.Services.Implementation.Administration
                 return null;
             }
         }
-        public async Task<List<vmMasterData>?> ListCountries()
+        public async Task<List<vmCompany>?> ListCompanies()
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "getcountries");
+                var request = new HttpRequestMessage(HttpMethod.Get, "getcompanies");
 
                 var response = await client.SendAsync(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
-                    var entities = JsonConvert.DeserializeObject<List<vmMasterData>>(stringContent);
+                    var entities = JsonConvert.DeserializeObject<List<vmCompany>>(stringContent);
                     return entities;
                 }
 
@@ -59,7 +57,7 @@ namespace SSUI.Services.Implementation.Administration
                 return null;
             }
         }
-        public async Task<vmMasterData?> ModifyCountry(vmMasterData UserInput)
+        public async Task<vmCompany?> ModifyCompany(vmCompany UserInput)
         {
             try
             {
@@ -67,12 +65,12 @@ namespace SSUI.Services.Implementation.Administration
 
                 if (UserInput.Id == "00000000-0000-0000-0000-000000000000")
                 {
-                    request = new HttpRequestMessage(HttpMethod.Post, "addcountry");
+                    request = new HttpRequestMessage(HttpMethod.Post, "addcompany");
 
                 }
                 else
                 {
-                    request = new HttpRequestMessage(HttpMethod.Post, "updatecountry");
+                    request = new HttpRequestMessage(HttpMethod.Post, "updatecompany");
                 }
 
                 var stringContent = JsonConvert.SerializeObject(UserInput);
@@ -94,11 +92,11 @@ namespace SSUI.Services.Implementation.Administration
                 return null;
             }
         }
-        public async Task<bool?> RemoveCountry(string Id)
+        public async Task<bool?> RemoveCompany(string Id)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Delete, $"deletecountry/{Id}");
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"deletecompany/{Id}");
 
                 var response = await client.SendAsync(request);
 

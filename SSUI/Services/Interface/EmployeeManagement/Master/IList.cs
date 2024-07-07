@@ -2,9 +2,9 @@
 {
     public interface IList
     {
-        public Task<vmMasterData?> ModifyList(vmMasterData UserInput);
-        public Task<List<vmMasterData>?> ListLists();
+        public Task<vmList?> ModifyList(vmList UserInput);
+        public Task<List<vmList>?> ListLists();
         public Task<bool?> RemoveList(string Id);
-        public Task<vmMasterData?> EditList(string Id);
+        public Task<vmList?> EditList(string Id);
     }
 }

@@ -12,6 +12,11 @@
             try
             {
                 if (oRecord is null) { return false; }
+
+                odb.Attach(oRecord.Company);
+                odb.Attach(oRecord.Unit);
+                odb.Attach(oRecord.Bank);
+
                 odb.MstBankBranches.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -51,9 +56,11 @@
             try
             {
                 if (id == Guid.Empty) { return oRecord; }
-                oRecord = await (from a in odb.MstBankBranches
-                                 where a.Id == id
-                                 select a).FirstOrDefaultAsync();
+                oRecord = await odb.MstBankBranches
+                           .Include(b => b.Company)
+                           .Include(b => b.Unit)
+                           .Include(b => b.Bank)
+                           .FirstOrDefaultAsync(a => a.Id == id);
 
                 return oRecord;
             }
@@ -83,15 +90,60 @@
         {
             try
             {
-                if (oRecord is null) { return false; }
-                odb.MstBankBranches.Update(oRecord);
+                if (oRecord == null) return false;
+
+                // Fetch the existing entity with no tracking
+                var existingBankBranch = await odb.MstBankBranches
+                    .Include(b => b.Company)
+                    .Include(b => b.Unit)
+                    .AsNoTracking() // Ensure no tracking
+                    .FirstOrDefaultAsync(b => b.Id == oRecord.Id);
+
+                if (existingBankBranch == null) return false;
+
+                // Attach the main entity
+                odb.MstBankBranches.Attach(oRecord);
+                odb.Entry(oRecord).State = EntityState.Modified;
+
+                // Attach the Company if it exists in the database
+                if (oRecord.Company != null)
+                {
+                    var existingCompany = await odb.MstCompanies
+                        .AsNoTracking() // Ensure no tracking
+                        .FirstOrDefaultAsync(c => c.Id == oRecord.Company.Id);
+
+                    if (existingCompany != null)
+                    {
+                        odb.Entry(oRecord.Company).State = EntityState.Detached;
+                        odb.Attach(oRecord.Company);
+                    }
+                }
+
+                // Attach the Unit if it exists in the database
+                if (oRecord.Unit != null)
+                {
+                    var existingUnit = await odb.MstUnits
+                        .AsNoTracking() // Ensure no tracking
+                        .FirstOrDefaultAsync(u => u.Id == oRecord.Unit.Id);
+
+                    if (existingUnit != null)
+                    {
+                        odb.Entry(oRecord.Unit).State = EntityState.Detached;
+                        odb.Attach(oRecord.Unit);
+                    }
+                }
+
                 await odb.SaveChangesAsync();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Log the exception for debugging
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
+
+
     }
 }

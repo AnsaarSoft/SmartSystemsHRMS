@@ -2,9 +2,9 @@
 {
     public interface IGrade
     {
-        public Task<vmMasterData?> ModifyGrade(vmMasterData UserInput);
-        public Task<List<vmMasterData>?> ListGrades();
+        public Task<vmMasterDataDD?> ModifyGrade(vmMasterDataDD UserInput);
+        public Task<List<vmMasterDataDD>?> ListGrades();
         public Task<bool?> RemoveGrade(string Id);
-        public Task<vmMasterData?> EditGrade(string Id);
+        public Task<vmMasterDataDD?> EditGrade(string Id);
     }
 }

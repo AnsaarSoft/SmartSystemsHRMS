@@ -3,9 +3,9 @@
     public class CountryServices : ICountry
     {
         private readonly HttpClient client;
-        private readonly ILogger<DepartmentService> logger;
+        private readonly ILogger<CountryServices> logger;
 
-        public CountryServices(HttpClient client, ILogger<DepartmentService> logger)
+        public CountryServices(HttpClient client, ILogger<CountryServices> logger)
         {
             this.client = client;
             this.logger = logger;

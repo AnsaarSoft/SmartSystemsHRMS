@@ -8,11 +8,11 @@
         [StringLength(50)]
         public string Title { get; set; } = string.Empty;
 
-        public virtual MstBank? Bank { get; set; }
+        public virtual MstBank Bank { get; set; }
 
-        public virtual MstUnit Unit { get; set; }
+        public virtual MstUnit? Unit { get; set; }
 
-        public virtual MstCompany Company { get; set; }
+        public virtual MstCompany? Company { get; set; }
 
         public bool flgActive { get; set; } = true;
 

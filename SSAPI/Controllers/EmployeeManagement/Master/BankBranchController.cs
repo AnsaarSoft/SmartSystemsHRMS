@@ -87,6 +87,15 @@
             if (!ModelState.IsValid)
                 return BadRequest();
 
+            //MstBankBranch bankbranch = new MstBankBranch()
+            //{
+            //    Title = InputData.Title,
+            //    flgActive = InputData.flgActive,
+            //    Bank = InputData.Bank,
+            //    Company = InputData.Company,
+            //    Unit = InputData.Unit
+            //};
+
             bool result = await repo.AddBankBranch(InputData);
 
             return result ? Ok("Added successfully.") :

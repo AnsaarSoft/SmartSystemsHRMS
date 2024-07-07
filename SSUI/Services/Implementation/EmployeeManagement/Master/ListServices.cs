@@ -3,26 +3,26 @@
     public class ListServices : IList
     {
         private readonly HttpClient client;
-        private readonly ILogger<DepartmentService> logger;
+        private readonly ILogger<ListServices> logger;
 
-        public CountryServices(HttpClient client, ILogger<DepartmentService> logger)
+        public ListServices(HttpClient client, ILogger<ListServices> logger)
         {
             this.client = client;
             this.logger = logger;
         }
 
-        public async Task<vmMasterData?> EditCountry(string Id)
+        public async Task<vmList?> EditList(string Id)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, $"getcountry/{Id}");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"getlist/{Id}");
 
                 var response = await client.SendAsync(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
-                    var entities = JsonConvert.DeserializeObject<vmMasterData>(stringContent);
+                    var entities = JsonConvert.DeserializeObject<vmList>(stringContent);
                     return entities;
                 }
 
@@ -34,18 +34,18 @@
                 return null;
             }
         }
-        public async Task<List<vmMasterData>?> ListCountries()
+        public async Task<List<vmList>?> ListLists()
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "getcountries");
+                var request = new HttpRequestMessage(HttpMethod.Get, "getlists");
 
                 var response = await client.SendAsync(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
-                    var entities = JsonConvert.DeserializeObject<List<vmMasterData>>(stringContent);
+                    var entities = JsonConvert.DeserializeObject<List<vmList>>(stringContent);
                     return entities;
                 }
 
@@ -57,7 +57,7 @@
                 return null;
             }
         }
-        public async Task<vmMasterData?> ModifyCountry(vmMasterData UserInput)
+        public async Task<vmList?> ModifyList(vmList UserInput)
         {
             try
             {
@@ -65,12 +65,12 @@
 
                 if (UserInput.Id == "00000000-0000-0000-0000-000000000000")
                 {
-                    request = new HttpRequestMessage(HttpMethod.Post, "addcountry");
+                    request = new HttpRequestMessage(HttpMethod.Post, "addlist");
 
                 }
                 else
                 {
-                    request = new HttpRequestMessage(HttpMethod.Post, "updatecountry");
+                    request = new HttpRequestMessage(HttpMethod.Post, "updatelist");
                 }
 
                 var stringContent = JsonConvert.SerializeObject(UserInput);
@@ -92,11 +92,11 @@
                 return null;
             }
         }
-        public async Task<bool?> RemoveCountry(string Id)
+        public async Task<bool?> RemoveList(string Id)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Delete, $"deletecountry/{Id}");
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"deletelist/{Id}");
 
                 var response = await client.SendAsync(request);
 
@@ -113,5 +113,6 @@
                 return null;
             }
         }
+
     }
 }

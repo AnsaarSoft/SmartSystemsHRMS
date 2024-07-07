@@ -13,6 +13,8 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
             try
             {
                 if (oRecord is null) { return false; }
+                odb.Attach(oRecord.Company);
+                odb.Attach(oRecord.Unit);
                 odb.MstLocations.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -52,9 +54,10 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
             try
             {
                 if (id == Guid.Empty) { return oRecord; }
-                oRecord = await (from a in odb.MstLocations
-                                 where a.Id == id
-                                 select a).FirstOrDefaultAsync();
+                oRecord = await odb.MstLocations
+                           .Include(b => b.Company)
+                           .Include(b => b.Unit)
+                           .FirstOrDefaultAsync(a => a.Id == id);
 
                 return oRecord;
             }

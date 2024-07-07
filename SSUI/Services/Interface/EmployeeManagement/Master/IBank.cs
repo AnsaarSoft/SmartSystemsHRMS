@@ -2,9 +2,11 @@
 {
     public interface IBank
     {
-        public Task<vmMasterData?> ModifyBank(vmMasterData UserInput);
-        public Task<List<vmMasterData>?> ListBanks();
+        public Task<vmMasterDataDD?> ModifyBank(vmMasterDataDD UserInput);
+        public Task<List<vmMasterDataDD>?> ListBanks();
         public Task<bool?> RemoveBank(string Id);
-        public Task<vmMasterData?> EditBank(string Id);
+        public Task<vmMasterDataDD?> EditBank(string Id);
+
+
     }
 }

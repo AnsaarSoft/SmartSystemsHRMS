@@ -86,7 +86,7 @@ namespace SSAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BankId")
+                    b.Property<Guid>("BankId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CompanyId")
@@ -1042,13 +1042,13 @@ namespace SSAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("937300f9-098f-4b73-896a-dc81ce8ca2a1"),
+                            Id = new Guid("b0720623-4d22-4d62-b13d-fe57f739ae12"),
                             CreatedBy = "Auto",
-                            CreatedDate = new DateTime(2024, 6, 10, 21, 27, 44, 123, DateTimeKind.Local).AddTicks(5174),
+                            CreatedDate = new DateTime(2024, 7, 7, 10, 8, 4, 158, DateTimeKind.Local).AddTicks(3026),
                             Email = "",
                             Password = "super@123",
                             UpdatedBy = "Auto",
-                            UpdatedDate = new DateTime(2024, 6, 10, 21, 27, 44, 123, DateTimeKind.Local).AddTicks(5188),
+                            UpdatedDate = new DateTime(2024, 7, 7, 10, 8, 4, 158, DateTimeKind.Local).AddTicks(3040),
                             UserCode = "manager",
                             UserType = 1,
                             cAppStamp = "Auto",
@@ -1419,7 +1419,8 @@ namespace SSAPI.Migrations
                     b.HasOne("SharedLibrary.Model.EmployeeManagement.Master.MstBank", "Bank")
                         .WithMany()
                         .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SharedLibrary.Model.OrganizationManagement.MstCompany", "Company")
                         .WithMany()

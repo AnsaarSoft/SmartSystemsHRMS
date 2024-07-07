@@ -2,9 +2,9 @@
 {
     public interface IUnit
     {
-        public Task<vmMasterData?> ModifyUnit(vmMasterData UserInput);
-        public Task<List<vmMasterData>?> ListUnits();
+        public Task<vmUnit?> ModifyUnit(vmUnit UserInput);
+        public Task<List<vmUnit>?> ListUnits();
         public Task<bool?> RemoveUnit(string Id);
-        public Task<vmMasterData?> EditUnit(string Id);
+        public Task<vmUnit?> EditUnit(string Id);
     }
 }

@@ -174,12 +174,12 @@
         const openbtn = document.getElementById('open');
         const closebtn = document.getElementById('close');
         const sidebar = document.getElementById('sidebar');
-        const arrow = document.getElementById('arrow');
+        /* const arrow = document.getElementById('arrow') */;
         const top = document.getElementById('nav-bar-top-text');
         const Pic = document.getElementById('Center-Pic');
 
         sidebar.style.width = '250px';
-        arrow.style.display = 'block';
+        // arrow.style.display = 'block';
         openbtn.style.display = 'none';
         closebtn.style.display = 'block';
         top.style.display = 'block';
@@ -192,14 +192,14 @@
         const closebtn = document.getElementById('close');
 
         const sidebar = document.getElementById('sidebar');
-        const arrow = document.getElementById('arrow');
+        // const arrow = document.getElementById('arrow');
 
         const top = document.getElementById('nav-bar-top-text');
 
         const Pic = document.getElementById('Center-Pic');
 
         sidebar.style.width = '65px';
-        arrow.style.display = 'none';
+        // arrow.style.display = 'none';
         openbtn.style.display = 'block';
         closebtn.style.display = 'none';
         top.style.display = 'none';
@@ -219,7 +219,7 @@
     }
   
 </script>
-<div class="sidebar" id="sidebar">
+<div class="sidebar" id="sidebar" style="overflow-y:scroll;">
     <div style="display:flex;">
     <div class="nav-bar-button" id="nav-bar-button">
         <a onclick="toggleOpenBtn()"><ion-icon name="menu-outline" class="open" id="open"></ion-icon></a>
@@ -239,13 +239,13 @@
         </div>
     <ul class="main-menu">
 
-        <li>
+        <li hidden>
             <a onclick="toggleDropdown()">
                 <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                 <span class="text">Home</span>
                 <span class="arrow" id="arrow"></span>
             </a>
-            <div id="dropdown">
+           @*  <div id="dropdown">
                 <ul>
                     <li>
                         <a>
@@ -271,51 +271,149 @@
                             <span class="text">Counties</span>
                         </a>
                     </li>
-                </ul>
-            </div>
+                </ul> 
+            </div> *@
         </li>
-        <li>
+      
+        <li @onclick="Goto_Companies">
             <a>
-                <span class="icon"><ion-icon name="pie-chart-outline"></ion-icon></span>
-                <span class="text">Position</span>
-            </a>
-        </li>
-        <li @onclick="Goto_Departments">
-            <a>
-                <span class="icon"><ion-icon name="albums-outline"></ion-icon></span>
-                <span class="text">Department</span>
+                <span class="icon"><ion-icon name="business-outline"></ion-icon></span>
+                <span class="text">Companies</span>
             </a>
 
         </li>
-        <li @onclick="Goto_Countries">
+        <li @onclick="Goto_Units">
             <a>
                 <span class="icon"><ion-icon name="albums-outline"></ion-icon></span>
+                <span class="text">Units</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_Branches">
+            <a>
+                <span class="icon"><ion-icon name="git-branch-outline"></ion-icon></span>
+                <span class="text">Branches</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_Banks">
+            <a>
+                <span class="icon"><ion-icon name="card-outline"></ion-icon></span>
+                <span class="text">Banks</span>
+            </a>
+
+        </li>
+       
+        <li @onclick="Goto_BankBranches">
+            <a>
+                <span class="icon"><ion-icon name="wallet-outline"></ion-icon></span>
+                <span class="text"> &nbsp;Bank Branch</span>
+            </a>
+
+        </li>
+
+       
+        <li @onclick="Goto_Countries">
+            <a>
+                <span class="icon"><ion-icon name="earth-outline"></ion-icon></span>
                 <span class="text">Countries</span>
             </a>
 
         </li>
-        <li>
+        <li @onclick="Goto_Cities">
             <a>
-                <span class="icon"><ion-icon name="bag-outline"></ion-icon></span>
-                <span class="text">Inventory</span>
+                <span class="icon"><ion-icon name="journal-outline"></ion-icon></span>
+                <span class="text">Cities</span>
             </a>
+
         </li>
-        <li>
+        <li @onclick="Goto_Lists">
             <a>
-                <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
-                <span class="text">Settings</span>
+                <span class="icon"><ion-icon name="list-outline"></ion-icon></span>
+                <span class="text">Lists</span>
             </a>
+
         </li>
+        <li @onclick="Goto_Departments">
+            <a>
+                <span class="icon"><ion-icon name="list-outline"></ion-icon></span>
+                <span class="text">Department</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_Designations">
+            <a>
+                <span class="icon"><ion-icon name="book-outline"></ion-icon></span>
+                <span class="text">Designations</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_Grades">
+            <a>
+                <span class="icon"><ion-icon name="bar-chart-outline"></ion-icon></span>
+                <span class="text">Grades</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_Locations">
+            <a>
+                <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
+                <span class="text">Locations</span>
+            </a>
+
+        </li>
+       
        
     </ul>
 </div>
 @code{
     private void Goto_Departments()
     {
-        NavigationManager.NavigateTo("/department");
+        NavigationManager.NavigateTo("/departments");
     }
     private void Goto_Countries()
     {
         NavigationManager.NavigateTo("/countries");
     }
+    private void Goto_Companies()
+    {
+        NavigationManager.NavigateTo("/companies");
+    }
+    private void Goto_Lists()
+    {
+        NavigationManager.NavigateTo("/lists");
+    }
+    private void Goto_Banks()
+    {
+        NavigationManager.NavigateTo("/banks");
+    }
+    private void Goto_Branches()
+    {
+        NavigationManager.NavigateTo("/branches");
+    }
+    private void Goto_Designations()
+    {
+        NavigationManager.NavigateTo("/designations");
+    }
+    private void Goto_Grades()
+    {
+        NavigationManager.NavigateTo("/grades");
+    }
+    private void Goto_Locations()
+    {
+        NavigationManager.NavigateTo("/locations");
+    }
+    private void Goto_Cities()
+    {
+        NavigationManager.NavigateTo("/cities");
+    }
+    private void Goto_Units()
+    {
+        NavigationManager.NavigateTo("/units");
+    }
+    private void Goto_BankBranches()
+    {
+        NavigationManager.NavigateTo("/bankbranches");
+    }
+
 }

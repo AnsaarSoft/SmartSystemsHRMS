@@ -87,7 +87,15 @@
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            bool result = await repo.AddBank(InputData);
+            MstBank bank = new MstBank()
+            {
+                Title = InputData.Title,
+                flgActive = InputData.flgActive,
+                Company = InputData.Company,
+                Unit = InputData.Unit
+            };
+
+            bool result = await repo.AddBank(bank);
 
             return result ? Ok("Added successfully.") :
                      BadRequest("Failed to Add.");

@@ -2,9 +2,9 @@
 {
     public interface IBranch
     {
-        public Task<vmMasterData?> ModifyBranch(vmMasterData UserInput);
-        public Task<List<vmMasterData>?> ListBranches();
+        public Task<vmMasterDataDD?> ModifyBranch(vmMasterDataDD UserInput);
+        public Task<List<vmMasterDataDD>?> ListBranches();
         public Task<bool?> RemoveBranch(string Id);
-        public Task<vmMasterData?> EditBranch(string Id);
+        public Task<vmMasterDataDD?> EditBranch(string Id);
     }
 }
