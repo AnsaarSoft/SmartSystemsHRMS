@@ -4,10 +4,10 @@
     [ApiController]
     public class EmpEducationController : ControllerBase
     {
-        private readonly MstEmpEducationService repo;
+        private readonly IMstEmpEducation repo;
         private readonly ILogger<EmpEducationController> log;
 
-        public EmpEducationController(MstEmpEducationService repo, ILogger<EmpEducationController> log)
+        public EmpEducationController(IMstEmpEducation repo, ILogger<EmpEducationController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,39 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("addempeducation")]
+        public async Task<ActionResult> AddEmpEducation(MstEmpEducation InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            MstEmpEducation employee = new MstEmpEducation()
+            {
+                InstName = InputData.InstName,
+                DegreeName = InputData.DegreeName,
+                Employee = InputData.Employee,
+                EndDate = InputData.EndDate,
+                StartDate = InputData.StartDate,
+                flgActive = InputData.flgActive,
+            };
+
+            bool result = await repo.AddEmpEducation(employee);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+        [HttpPost("updateempeducation")]
+        public async Task<ActionResult> UpdateEmpEducation(MstEmpEducation InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateEmpEducation(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

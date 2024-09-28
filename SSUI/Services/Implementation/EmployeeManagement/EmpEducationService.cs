@@ -1,28 +1,30 @@
-﻿namespace SSUI.Service.Implementation.EmployeeManagement
+﻿using SSUI.Services.Interface;
+
+namespace SSUI.Services.Implementation.EmployeeManagement
 {
-    public class EmployeeService : IEmployee
+    public class EmpEducationService : IEmpEducation, IDropdownEmployee
     {
         private readonly HttpClient client;
-        private readonly ILogger<EmployeeService> logger;
+        private readonly ILogger<EmpEducationService> logger;
 
-        public EmployeeService(HttpClient client, ILogger<EmployeeService> logger)
+        public EmpEducationService(HttpClient client, ILogger<EmpEducationService> logger)
         {
             this.client = client;
             this.logger = logger;
         }
 
-        public async Task<vmEmployee?> EditEmployee(string Id)
+        public async Task<vmEmpData?> EditEmpEducation(string Id)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, $"getEmployee/{Id}");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"getempeducation/{Id}");
 
                 var response = await client.SendAsync(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
-                    var entities = JsonConvert.DeserializeObject<vmEmployee>(stringContent);
+                    var entities = JsonConvert.DeserializeObject<vmEmpData>(stringContent);
                     return entities;
                 }
 
@@ -34,18 +36,19 @@
                 return null;
             }
         }
-        public async Task<List<vmEmployee>?> ListEmployees()
+        public async Task<List<vmEmpData>?> ListEmpEducations()
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "getemployees");
+                var request = new HttpRequestMessage(HttpMethod.Get, "getempeducations");
 
                 var response = await client.SendAsync(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var stringContent = await response.Content.ReadAsStringAsync();
-                    var entities = JsonConvert.DeserializeObject<List<vmEmployee>>(stringContent);
+                    var entities = JsonConvert.DeserializeObject<List<vmEmpData>>(stringContent);
+
                     return entities;
                 }
 
@@ -57,7 +60,7 @@
                 return null;
             }
         }
-        public async Task<vmEmployee?> ModifyEmployee(vmEmployee UserInput)
+        public async Task<vmEmpData?> ModifyEmpEducation(vmEmpData UserInput)
         {
             try
             {
@@ -65,12 +68,12 @@
 
                 if (UserInput.Id == "00000000-0000-0000-0000-000000000000")
                 {
-                    request = new HttpRequestMessage(HttpMethod.Post, "addEmployee");
+                    request = new HttpRequestMessage(HttpMethod.Post, "addempeducation");
 
                 }
                 else
                 {
-                    request = new HttpRequestMessage(HttpMethod.Post, "updateEmployee");
+                    request = new HttpRequestMessage(HttpMethod.Post, "updateempeducation");
                 }
 
                 var stringContent = JsonConvert.SerializeObject(UserInput);
@@ -92,17 +95,41 @@
                 return null;
             }
         }
-        public async Task<bool?> RemoveEmployee(string Id)
+        public async Task<bool?> RemoveEmpEducation(string Id)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Delete, $"deleteEmployee/{Id}");
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"deleteempeducation/{Id}");
 
                 var response = await client.SendAsync(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return true;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return null;
+            }
+        }
+
+        public async Task<List<MstEmployee>?> ListEmployees()
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "getemployees");
+
+                var response = await client.SendAsync(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var stringContent = await response.Content.ReadAsStringAsync();
+                    var entities = JsonConvert.DeserializeObject<List<MstEmployee>>(stringContent);
+                    return entities;
                 }
 
                 return null;
