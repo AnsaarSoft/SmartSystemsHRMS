@@ -362,7 +362,34 @@
             </a>
 
         </li>
-       
+        <li @onclick="Goto_Employees">
+            <a>
+                <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
+                <span class="text">Employees</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_EmpExperience">
+            <a>
+                <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
+                <span class="text">Employee Experience</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_EmpEducation">
+            <a>
+                <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
+                <span class="text">Employee Education</span>
+            </a>
+
+        </li>
+        <li @onclick="Goto_EmpDependent">
+            <a>
+                <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
+                <span class="text">Employee Dependent</span>
+            </a>
+
+        </li>
        
     </ul>
 </div>
@@ -415,5 +442,20 @@
     {
         NavigationManager.NavigateTo("/bankbranches");
     }
-
+    private void Goto_Employees()
+    {
+        NavigationManager.NavigateTo("/employees");
+    }
+    private void Goto_EmpExperience()
+    {
+        NavigationManager.NavigateTo("/employeeexperience");
+    }
+     private void Goto_EmpEducation()
+    {
+        NavigationManager.NavigateTo("/employeeeducation");
+    }
+    private void Goto_EmpDependent()
+    {
+        NavigationManager.NavigateTo("/employeedependent");
+    }
 }

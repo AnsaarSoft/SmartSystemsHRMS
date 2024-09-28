@@ -13,6 +13,7 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement
             try
             {
                 if (oRecord is null) { return false; }
+                odb.Attach(oRecord.Employee);
                 odb.MstEmpExperiences.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -54,7 +55,9 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement
                 if (id == Guid.Empty) { return oRecord; }
                 oRecord = await (from a in odb.MstEmpExperiences
                                  where a.Id == id
-                                 select a).FirstOrDefaultAsync();
+                                 select a)
+                                 .Include(e => e.Employee)
+                                 .FirstOrDefaultAsync();
 
                 return oRecord;
             }
@@ -69,12 +72,14 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement
             List<MstEmpExperience> oRecords = new();
             try
             {
-                oRecords = await (from a in odb.MstEmpExperiences
-                                  select a).ToListAsync();
+                oRecords = await odb.MstEmpExperiences
+                                    .Include(e => e.Employee) // Include the Employee data
+                                    .Where(x => x.flgDelete == false)
+                                    .ToListAsync();
             }
             catch (Exception)
             {
-
+                // Handle exceptions as needed
             }
             return oRecords;
         }
