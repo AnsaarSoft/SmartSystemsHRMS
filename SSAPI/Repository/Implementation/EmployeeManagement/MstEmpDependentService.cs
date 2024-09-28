@@ -13,8 +13,6 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement
             try
             {
                 if (oRecord is null) { return false; }
-                odb.Attach(oRecord.Employee);
-                odb.Attach(oRecord.Relation);
                 odb.MstEmpDependents.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -56,8 +54,7 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement
                 if (id == Guid.Empty) { return oRecord; }
                 oRecord = await (from a in odb.MstEmpDependents
                                  where a.Id == id
-                                 select a)
-                                 .Where(x => x.flgActive == true).FirstOrDefaultAsync();
+                                 select a).FirstOrDefaultAsync();
 
                 return oRecord;
             }
@@ -73,7 +70,7 @@ namespace SSAPI.Repository.Implementation.EmployeeManagement
             try
             {
                 oRecords = await (from a in odb.MstEmpDependents
-                                  select a).Where(x => x.flgActive == true).ToListAsync();
+                                  select a).ToListAsync();
             }
             catch (Exception)
             {

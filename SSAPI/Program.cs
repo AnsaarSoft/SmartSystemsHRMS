@@ -32,10 +32,9 @@ try
     builder.Services.AddScoped<IMstGrade, MstGradeService>();
     builder.Services.AddScoped<IMstLocation, MstLocationService>();
     builder.Services.AddScoped<IMstUnit, MstUnitService>();
-    builder.Services.AddScoped<IMstEmployee, MstEmployeeService>();
-    builder.Services.AddScoped<IMstEmpExperience, MstEmpExperienceService>();
-    builder.Services.AddScoped<IMstEmpEducation, MstEmpEducationService>();
-    builder.Services.AddScoped<IMstEmpDependent, MstEmpDependentService>();
+
+    //builder.Services.AddScoped<IMstEmployee, MstEmployeeService>();
+
     #endregion
 
     builder.Services.AddControllers();

@@ -80,38 +80,5 @@
                 return BadRequest(Messaging.ServerError);
             }
         }
-
-        [HttpPost("addempeducation")]
-        public async Task<ActionResult> AddEmpDependent(MstEmpDependent InputData)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            MstEmpDependent employee = new MstEmpDependent()
-            {
-                Name = InputData.Name,
-                DOB = InputData.DOB,
-                Employee = InputData.Employee,
-                NationalCardNo = InputData.NationalCardNo,
-                Relation = InputData.Relation,
-                flgActive = InputData.flgActive,
-            };
-
-            bool result = await repo.AddEmpDependent(employee);
-
-            return result ? Ok("Added successfully.") :
-                     BadRequest("Failed to Add.");
-        }
-        [HttpPost("updateempeducation")]
-        public async Task<ActionResult> UpdateEmpDependent(MstEmpDependent InputData)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            bool result = await repo.UpdateEmpDependent(InputData);
-
-            return result ? Ok("Added successfully.") :
-                     BadRequest("Failed to Add.");
-        }
     }
 }

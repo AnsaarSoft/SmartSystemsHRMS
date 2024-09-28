@@ -1,4 +1,13 @@
-﻿namespace SharedLibrary.Model.EmployeeManagement
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+
+namespace SharedLibrary.Model.EmployeeManagement
 {
     public class MstEmployee
     {
@@ -6,22 +15,7 @@
         public string FirstName { get; set; } = string.Empty;
         public string MiddleName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-        public string FullName
-        {
-            get
-            {
-                var names = new List<string>();
-
-                if (!string.IsNullOrWhiteSpace(FirstName))
-                    names.Add(FirstName);
-                if (!string.IsNullOrWhiteSpace(MiddleName))
-                    names.Add(MiddleName);
-                if (!string.IsNullOrWhiteSpace(LastName))
-                    names.Add(LastName);
-
-                return string.Join(" ", names);
-            }
-        }
+        public string FullName { get; } = string.Empty;
         public string FatherName { get; set; } = string.Empty;
         public string MotherName { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;

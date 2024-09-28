@@ -1,4 +1,3 @@
-using SSUI.Service.Implementation.EmployeeManagement;
 using SSUI.Services.Implementation.Administration;
 using SSUI.Services.Implementation.EmployeeManagement.Master;
 using SSUI.Services.Interface;
@@ -69,14 +68,6 @@ try
     builder.Services.AddHttpClient<IDropdownBank, BankBranchServices>(options => { options.BaseAddress = new Uri(ApiUrl + "Bank/"); });
     builder.Services.AddHttpClient<IDropdownCompany, BankBranchServices>(options => { options.BaseAddress = new Uri(ApiUrl + "MstCompany/"); });
     builder.Services.AddHttpClient<IDropdownUnit, BankBranchServices>(options => { options.BaseAddress = new Uri(ApiUrl + "MstUnit/"); });
-    builder.Services.AddHttpClient<IEmpExperience, EmpExperienceService>(options => { options.BaseAddress = new Uri(ApiUrl + "EmpExperience/"); });
-    builder.Services.AddHttpClient<IDropdownEmployee, EmpExperienceService>(options => { options.BaseAddress = new Uri(ApiUrl + "Employee/"); });
-    builder.Services.AddHttpClient<IEmployee, EmployeeService>(options => { options.BaseAddress = new Uri(ApiUrl + "Employee/"); });
-    builder.Services.AddHttpClient<IEmpEducation, EmpEducationService>(options => { options.BaseAddress = new Uri(ApiUrl + "EmpEducation/"); });
-    builder.Services.AddHttpClient<IDropdownEmployee, EmpEducationService>(options => { options.BaseAddress = new Uri(ApiUrl + "Employee/"); });
-    builder.Services.AddHttpClient<IDropdownEmployee, EmpDependentService>(options => { options.BaseAddress = new Uri(ApiUrl + "Employee/"); });
-    builder.Services.AddHttpClient<IListsDropdown, EmpDependentService>(options => { options.BaseAddress = new Uri(ApiUrl + "List/"); });
-    builder.Services.AddHttpClient<IEmpDependents, EmpDependentService>(options => { options.BaseAddress = new Uri(ApiUrl + "EmpDependent/"); });
 
     var app = builder.Build();
 
