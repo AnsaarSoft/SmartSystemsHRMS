@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Interface.Employee.Master
+﻿namespace SSAPI.Repository.Interface.EmployeeManagement.Master
 {
     public interface IMstCountry
     {

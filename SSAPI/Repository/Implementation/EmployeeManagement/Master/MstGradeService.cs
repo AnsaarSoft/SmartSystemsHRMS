@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Service.Employee.Master
+﻿namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
 {
     public class MstGradeService : IMstGrade
     {
@@ -12,6 +12,8 @@
             try
             {
                 if (oRecord is null) { return false; }
+                odb.Attach(oRecord.Company);
+                odb.Attach(oRecord.Unit);
                 odb.MstGrades.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -51,9 +53,10 @@
             try
             {
                 if (id == Guid.Empty) { return oRecord; }
-                oRecord = await (from a in odb.MstGrades
-                                 where a.Id == id
-                                 select a).FirstOrDefaultAsync();
+                oRecord = await odb.MstGrades
+                            .Include(b => b.Company)
+                            .Include(b => b.Unit)
+                            .FirstOrDefaultAsync(a => a.Id == id);
 
                 return oRecord;
             }
@@ -69,6 +72,7 @@
             try
             {
                 oRecords = await (from a in odb.MstGrades
+                                  where a.flgDelete == false
                                   select a).ToListAsync();
             }
             catch (Exception)

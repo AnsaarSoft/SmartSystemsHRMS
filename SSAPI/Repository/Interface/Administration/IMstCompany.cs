@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Interface.Administration
+﻿namespace SSAPI.Repository.Interface.Administration
 {
     public interface IMstCompany
     {

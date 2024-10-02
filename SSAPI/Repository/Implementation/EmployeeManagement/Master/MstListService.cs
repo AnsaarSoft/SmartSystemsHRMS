@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Service.Employee.Master
+﻿namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
 {
     public class MstListService : IMstList
     {
@@ -69,6 +69,7 @@
             try
             {
                 oRecords = await (from a in odb.MstLists
+                                  where a.flgDelete == false
                                   select a).ToListAsync();
             }
             catch (Exception)

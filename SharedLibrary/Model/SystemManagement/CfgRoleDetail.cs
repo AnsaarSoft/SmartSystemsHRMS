@@ -4,12 +4,11 @@
     {
         [Key, Required]
         public Guid Id { get; set; }
-
-        public CfgRole Role { get; set; }
-        public CfgMenu Form { get; set; }
-        public bool FlgView { get; set; }
-        public bool FlgEdit { get; set; }
-        public bool FlgAdmin { get; set; }
+        public virtual CfgRole Role { get; set; } 
+        public virtual CfgMenu Form { get; set; }
+        public bool flgView { get; set; }
+        public bool flgEdit { get; set; }
+        public bool flgAdmin { get; set; }
         public bool flgActive { get; set; } = true;
 
         public bool flgDelete { get; set; } = false;

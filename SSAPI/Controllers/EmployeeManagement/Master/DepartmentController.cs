@@ -4,10 +4,10 @@
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly MstDepartmentService repo;
+        private readonly IMstDepartment repo;
         private readonly ILogger<DepartmentController> log;
 
-        public DepartmentController(MstDepartmentService repo, ILogger<DepartmentController> log)
+        public DepartmentController(IMstDepartment repo, ILogger<DepartmentController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,30 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("adddepartment")]
+        public async Task<ActionResult> AddDepartment(MstDepartment InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddDepartment(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatedepartment")]
+        public async Task<ActionResult> UpdateDepartment(MstDepartment InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateDepartment(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

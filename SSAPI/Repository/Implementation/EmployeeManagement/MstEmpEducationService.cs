@@ -1,5 +1,5 @@
 ﻿
-namespace Server.Repository.Service.Employee
+namespace SSAPI.Repository.Implementation.EmployeeManagement
 {
     public class MstEmpEducationService : IMstEmpEducation
     {
@@ -13,6 +13,7 @@ namespace Server.Repository.Service.Employee
             try
             {
                 if (oRecord is null) { return false; }
+                odb.Attach(oRecord.Employee);
                 odb.MstEmpEducations.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -54,7 +55,9 @@ namespace Server.Repository.Service.Employee
                 if (id == Guid.Empty) { return oRecord; }
                 oRecord = await (from a in odb.MstEmpEducations
                                  where a.Id == id
-                                 select a).FirstOrDefaultAsync();
+                                 select a)
+                                 .Include(e => e.Employee)
+                                 .Where(x => x.flgDelete == false).FirstOrDefaultAsync();
 
                 return oRecord;
             }
@@ -70,7 +73,9 @@ namespace Server.Repository.Service.Employee
             try
             {
                 oRecords = await (from a in odb.MstEmpEducations
-                                  select a).ToListAsync();
+                                  select a)
+                                  .Include(e => e.Employee)
+                                   .Where(x => x.flgDelete == false).ToListAsync();
             }
             catch (Exception)
             {

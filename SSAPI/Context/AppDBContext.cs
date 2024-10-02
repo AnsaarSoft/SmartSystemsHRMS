@@ -26,12 +26,18 @@
                     cAppStamp = "Auto",
                     uAppStamp = "Auto",
                 });
+            
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+                
+            }
         }
 
 
         #region All Tables
         public DbSet<MstUser> MstUsers { get; set; }
-        //public DbSet<MstEmployee> MstEmployees { get; set; }
+        public DbSet<MstEmployee> MstEmployees { get; set; }
         public DbSet<MstBankBranch> MstBankBranches { get; set; }
         public DbSet<MstBank> MstBanks { get; set; }
         public DbSet<MstBranch> MstBranches { get; set; }

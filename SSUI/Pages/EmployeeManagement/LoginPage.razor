@@ -1,37 +1,217 @@
 ﻿@layout LoginLayout
 @page "/login"
 
-<style>
-    .buttonspace{
-        margin-top: 3rem;
-    }
-
-    .loginbutton{
-        width: 8rem;
-    }
-</style>
 
 @if (PageLoad)
 {
+    <head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(179.4deg, rgb(12, 20, 69) -16.9%, rgb(71, 30, 84) 119.9%);
+            font-family: Arial, sans-serif;
+            height: 99vh;
+            width: 99vw;
+        }
 
-    <EditForm Model="model" OnValidSubmit="PostSubmit">
-        <DataAnnotationsValidator />
-        <MudCard>
-            <MudCardContent>
+        .page-layout {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-                <MudTextField Label="Usercode/Email" HelperText="Max. 150 characters" Variant="Variant.Outlined"
-                              @bind-Value="model.UserCode" For="@(() => model.UserCode)" />
-                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3" Variant="Variant.Outlined"
-                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+        .app-info {
+            text-align: center;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-                <div class="buttonspace">
-                    <MudButton Class="loginbutton" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Login</MudButton>
+
+            .app-info h1 {
+                font-size: 70px;
+            }
+
+            .app-info p {
+                font-size: 25px;
+                margin-left: -160px;
+            }
+
+        .app-title {
+            display: flex;
+            align-items: center;
+        }
+
+            .app-title img {
+                margin-left: 50px;
+                margin-top: -60px;
+                margin-right: 10px;
+            }
+
+        .login {
+            padding: 50px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sign-in-card {
+            background: #fff;
+            height: 90vh;
+            width: 80vh;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .sign-in-card-top h3 {
+            font-size: 30px;
+            font-weight: 500;
+            padding-left: 20px;
+            /* margin-bottom: -90px; */
+        }
+
+        .sign-in-card-mid {
+            width: 80%;
+            padding-top: -50px;
+        }
+
+        .sign-in-card-bottom {
+            width: 80%;
+        }
+
+        .sign-in-card-mid input {
+            border: none;
+            border-bottom: 2px solid #ccc;
+            border-radius: 0;
+            margin-top: 15px;
+            height: 60px;
+            padding: 10px;
+            box-sizing: border-box;
+            outline: none;
+            width: 100%;
+        }
+
+            .sign-in-card-mid input:focus {
+                border-bottom-color: purple;
+            }
+
+        .forgot-password {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .gradient-button {
+            background: linear-gradient(179.4deg, rgb(43, 51, 104) -16.9%, rgb(71, 30, 84) 119.9%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            .gradient-button:hover {
+                opacity: 0.9;
+            }
+
+        .slide-in-from-bottom {
+            opacity: 0;
+            transform: translateY(25%);
+            transition: opacity 1.5s ease, transform 1s ease;
+            animation: slide-in 1s ease forwards;
+        }
+
+        @@keyframes slide-in {
+            0% {
+                opacity: 0;
+                transform: translateY(25%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in-from-bottom:nth-child(1) {
+            animation-delay: 0.5s;
+        }
+
+    </style>
+    </head>
+    <body>
+        <div class="page-layout h-100 row">
+            <div class="app-info container h-100 col-md-6 slide-in-from-bottom">
+                <div class="app-title">
+                    <img src="Static-Images/manager.png" width="120" />
+                    <h1>SmartHRMS</h1>
                 </div>
-            </MudCardContent>
-        </MudCard>
-    </EditForm>
+                <p>Management made simple!</p>
+            </div>
+            <div class="login container h-100 col-md-6">
+                <div class="sign-in-card">
+                    <div class="sign-in-card-top">
+                        <img src="Static-Images/login-pic.png" width="140" />
+                        <h3>Sign-In</h3>
+                    </div>
+                    <div class="sign-in-card-mid">
+                        <EditForm Model="model" OnValidSubmit="PostSubmit">
+                            <DataAnnotationsValidator />
+                                <MudCardContent>
+                                <div class="form-group">
+                                    <input type="text" id="username" placeholder="Enter Username" @bind="model.UserCode" For="@(() => model.UserCode)">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="password" placeholder="Enter Password" @bind="model.Password" For="@(() => model.Password)">
+                                </div>
+                               @*  <MudTextField Label="Usercode/Email" HelperText="Max. 150 characters" Variant="Variant.Outlined"
+                                                  @bind-Value="model.UserCode" For="@(() => model.UserCode)" />
+                                    <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3" Variant="Variant.Outlined"
+                                                  @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" /> *@
+                                <div class="form-group text-right">
+                                    <a href="#" class="forgot-password">Forgot password?</a>
+                                </div>
+                                </MudCardContent>
+
+                            <div class="buttonspace">
+                                <MudButton Disabled=IsProcessing Class="gradient-button" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
+                                    @if (IsProcessing)
+                                    {
+                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                        <MudText Class="ms-2" Color="Color.Primary">Authenticating...</MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText>Log In</MudText>
+                                    }
+                                </MudButton>
+                            </div>
+                        </EditForm>
+                      
+                    </div>
+
+                    <div class="sign-in-card-bottom">
+                   
+                    </div>
 
 
+                </div>
+            </div>
+        </div>
+
+    </body>
+   
 }
 else
 {
@@ -39,3 +219,6 @@ else
         <MudProgressCircular Color="Color.Tertiary" Indeterminate="true" />
     </MudOverlay>
 }
+
+
+

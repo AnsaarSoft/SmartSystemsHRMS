@@ -1,10 +1,39 @@
-﻿@page "/dashboard"
+﻿@layout MainLayout
+@page "/dashboard"
 @page "/"
+<style>
+    #dashboard-top{
+        width:100%;
+        height:30vh;
+        margin-bottom: 10px;
+        border-radius: 20px;
+        padding: 15px;
+        background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
+    }
 
+    #dashboard-bottom {
+        width: 100%;
+        height: 50vh;
+        border-radius: 20px;
+/*         overflow-y:hidden;
+ */        padding: 15px;
+        background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
+    }
+    #switch-fix{
+        display:flex;
+        margin-top: 15px;
+    }
+
+    .form-switch{
+        margin-left:20px;
+    }
+
+    #dashboard-bottom .mud-table {
+        height: 100%;
+        overflow-y: scroll;
+        border-radius:20px;
+    }
+</style>
 <PageTitle>Dashboard</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<h1>Dashboard</h1>

@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Service.Employee.Master
+﻿namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
 {
     public class MstCityService : IMstCity
     {
@@ -12,6 +12,8 @@
             try
             {
                 if (oRecord is null) { return false; }
+                odb.Attach(oRecord.Country);
+
                 odb.MstCities.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -51,9 +53,9 @@
             try
             {
                 if (id == Guid.Empty) { return oRecord; }
-                oRecord = await (from a in odb.MstCities
-                                 where a.Id == id
-                                 select a).FirstOrDefaultAsync();
+                oRecord = await odb.MstCities
+                           .Include(b => b.Country)
+                           .FirstOrDefaultAsync(a => a.Id == id);
 
                 return oRecord;
             }
@@ -69,6 +71,7 @@
             try
             {
                 oRecords = await (from a in odb.MstCities
+                                  where a.flgDelete == false
                                   select a).ToListAsync();
             }
             catch (Exception)

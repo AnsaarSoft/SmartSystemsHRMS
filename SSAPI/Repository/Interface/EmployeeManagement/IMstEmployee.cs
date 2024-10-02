@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Interface.Employee
+﻿namespace SSAPI.Repository.Interface.EmployeeManagement
 {
     public interface IMstEmployee
     {

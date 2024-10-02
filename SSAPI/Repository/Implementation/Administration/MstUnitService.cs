@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Service.Administration
+﻿namespace SSAPI.Repository.Implementation.Administration
 {
     public class MstUnitService : IMstUnit
     {
@@ -12,6 +12,8 @@
             try
             {
                 if (oRecord is null) { return false; }
+                odb.Attach(oRecord.Company);
+
                 odb.MstUnits.Add(oRecord);
                 await odb.SaveChangesAsync();
                 return true;
@@ -30,6 +32,20 @@
                 {
                     return false;
                 }
+
+                var hasBanks = await odb.MstBanks.AnyAsync(x => x.Unit.Id == id);
+                var hasBankBranches = await odb.MstBankBranches.AnyAsync(x => x.Unit.Id == id);
+                var hasBranches = await odb.MstBranches.AnyAsync(x => x.Unit.Id == id);
+                var hasDepartments = await odb.MstDepartments.AnyAsync(x => x.Unit.Id == id);
+                var hasDesignations = await odb.MstDesignations.AnyAsync(x => x.Unit.Id == id);
+                var hasGrades = await odb.MstGrades.AnyAsync(x => x.Unit.Id == id);
+                var hasLocations = await odb.MstLocations.AnyAsync(x => x.Unit.Id == id);
+
+                if (hasBanks || hasBankBranches || hasBranches || hasDepartments || hasDesignations || hasGrades || hasLocations)
+                {
+                    return false;
+                }
+
                 var oRecord = await (from a in odb.MstUnits
                                      where a.Id == id
                                      select a).FirstOrDefaultAsync();
@@ -51,9 +67,9 @@
             try
             {
                 if (id == Guid.Empty) { return oRecord; }
-                oRecord = await (from a in odb.MstUnits
-                                 where a.Id == id
-                                 select a).FirstOrDefaultAsync();
+                oRecord = await odb.MstUnits
+                          .Include(b => b.Company)
+                          .FirstOrDefaultAsync(a => a.Id == id);
 
                 return oRecord;
             }
@@ -69,6 +85,7 @@
             try
             {
                 oRecords = await (from a in odb.MstUnits
+                                  where a.flgDelete == false
                                   select a).ToListAsync();
             }
             catch (Exception)

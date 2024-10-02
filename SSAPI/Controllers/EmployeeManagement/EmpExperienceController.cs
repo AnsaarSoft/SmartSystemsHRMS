@@ -1,18 +1,18 @@
-﻿using Server.Repository.Service.Employee;
-
-namespace SSAPI.Controllers.EmployeeManagement
+﻿namespace SSAPI.Controllers.EmployeeManagement
 {
     [Route("api/[controller]")]
     [ApiController]
     public class EmpExperienceController : ControllerBase
     {
-        private readonly MstEmpExperienceService repo;
+        private readonly IMstEmpExperience repo;
+        private readonly IMstEmployee employee_repo;
         private readonly ILogger<EmpExperienceController> log;
 
-        public EmpExperienceController(MstEmpExperienceService repo, ILogger<EmpExperienceController> log)
+        public EmpExperienceController(IMstEmpExperience repo, ILogger<EmpExperienceController> log, IMstEmployee employee)
         {
             this.repo = repo;
             this.log = log;
+            this.employee_repo = employee;
         }
 
         [HttpGet("getempexperiences")]
@@ -28,6 +28,11 @@ namespace SSAPI.Controllers.EmployeeManagement
                 }
                 else
                 {
+                    //foreach (var employee in oCollection)
+                    //{
+                    //    employee.Employee = await employee_repo.GetEmployee(employee.Employee.Id);
+                    //}
+
                     return Ok(oCollection);
                 }
             }
@@ -81,6 +86,38 @@ namespace SSAPI.Controllers.EmployeeManagement
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+        [HttpPost("addempexperience")]
+        public async Task<ActionResult> AddEmpExperience(MstEmpExperience InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            MstEmpExperience employee = new MstEmpExperience()
+            {
+                OrgName = InputData.OrgName,
+                Employee = InputData.Employee,
+                EndDate = InputData.EndDate,
+                StartDate = InputData.StartDate,
+
+                flgActive = InputData.flgActive,
+            };
+
+            bool result = await repo.AddEmpExperience(employee);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+        [HttpPost("updateempexperience")]
+        public async Task<ActionResult> UpdateEmpExperience(MstEmpExperience InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateEmpExperience(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

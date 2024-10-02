@@ -4,10 +4,10 @@
     [ApiController]
     public class CityController : ControllerBase
     {
-        private readonly MstCityService repo;
+        private readonly IMstCity repo;
         private readonly ILogger<CityController> log;
 
-        public CityController(MstCityService repo, ILogger<CityController> log)
+        public CityController(IMstCity repo, ILogger<CityController> log)
         {
             this.repo = repo;
             this.log = log;
@@ -79,6 +79,30 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("addcity")]
+        public async Task<ActionResult> AddCity(MstCity InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddCity(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatecity")]
+        public async Task<ActionResult> UpdateCity(MstCity InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateCity(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

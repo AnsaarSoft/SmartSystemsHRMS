@@ -1,4 +1,4 @@
-﻿namespace Server.Repository.Service.Employee.Master
+﻿namespace SSAPI.Repository.Implementation.EmployeeManagement.Master
 {
     public class MstCountryService : IMstCountry
     {
@@ -30,6 +30,14 @@
                 {
                     return false;
                 }
+
+                var hasCities = await odb.MstCities.AnyAsync(x => x.Country.Id == id);
+
+                if (hasCities)
+                {
+                    return false;
+                }
+
                 var oRecord = await (from a in odb.MstCountries
                                      where a.Id == id
                                      select a).FirstOrDefaultAsync();
@@ -69,7 +77,9 @@
             try
             {
                 oRecords = await (from a in odb.MstCountries
+                                  where a.flgDelete == false
                                   select a).ToListAsync();
+
             }
             catch (Exception)
             {

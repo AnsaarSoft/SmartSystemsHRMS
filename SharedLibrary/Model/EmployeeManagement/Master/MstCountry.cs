@@ -7,9 +7,7 @@
 
         [StringLength(50)]
         public string Title { get; set; } = string.Empty;
-
         public bool flgActive { get; set; } = true;
-
         public bool flgDelete { get; set; } = false;
 
         [StringLength(50)]

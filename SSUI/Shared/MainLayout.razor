@@ -21,7 +21,6 @@
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
-
 @if (!PageLoad)
 {
     <MudOverlay DarkBackground="true" Absolute="true" Visible="!PageLoad">
@@ -30,28 +29,42 @@
 }
 else
 {
+  
     <MudLayout>
         <AuthorizeView>
             <Authorized>
-                <MudAppBar Elevation="1">
+               @*  <MudAppBar Elevation="1">
                     Smart Systems
                     <MudIconButton Style="margin-left:1rem;" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggler())" />
                     <MudIconButton Style="margin-left:10px;" Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" Edge="Edge.End"></MudIconButton>
                     <MudIconButton Style="margin-left:10px;" Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => LogoutUser())"></MudIconButton>
                     <div class="rightbuttons">
                     </div>
-                </MudAppBar>
-                <MudDrawer @bind-Open="@DrawerToggle" ClipMode="DrawerClipMode.Docked" Elevation="2">
-                    <NavMenu />
-                </MudDrawer>
+                </MudAppBar> *@
+@*                 <MudDrawer>
+                    
+                </MudDrawer> *@
+                
+                <div style="display:flex;">
+                    <SideBar />
+
+                    <div class="main-content">
+                        
+                        <NavBar />
+                        <div class="Main-Content" style="margin-left:10px; padding-top:10px;">
+                            @Body
+                        </div>
+                        
+                    </div>
+
+                </div>
+               
                 <MudSpacer></MudSpacer>
-                <MudMainContent>
-                    @Body
-                </MudMainContent>
+               
             </Authorized>
-            @* <NotAuthorized>
+            <NotAuthorized>
         <SSUI.Pages.EmployeeManagement.LoginPage />
-        </NotAuthorized> *@
+        </NotAuthorized> 
         </AuthorizeView>
 
 
