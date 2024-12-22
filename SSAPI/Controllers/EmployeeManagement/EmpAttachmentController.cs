@@ -4,7 +4,7 @@
     [ApiController]
     public class EmpAttachmentController : ControllerBase
     {
-        private readonly IMstEmpAttachment repo;
+        private readonly MstEmpAttachmentService repo;
         private readonly ILogger<EmpAttachmentController> log;
 
         public EmpAttachmentController(MstEmpAttachmentService repo, ILogger<EmpAttachmentController> log)
@@ -79,37 +79,6 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
-        }
-        [HttpPost("addempempattachment")]
-        public async Task<ActionResult> Addempattachment(MstEmpAttachment InputData)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            MstEmpAttachment employee = new MstEmpAttachment()
-            {
-                FilePath = InputData.FilePath,
-                FileName = InputData.FileName,
-                Employee = InputData.Employee,
-                Remarks = InputData.Remarks,
-                flgActive = InputData.flgActive,
-            };
-
-            bool result = await repo.AddEmpAttachment(employee);
-
-            return result ? Ok("Added successfully.") :
-                     BadRequest("Failed to Add.");
-        }
-        [HttpPost("updateempempattachment")]
-        public async Task<ActionResult> Updateempattachment(MstEmpAttachment InputData)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            bool result = await repo.UpdateEmpAttachment(InputData);
-
-            return result ? Ok("Added successfully.") :
-                     BadRequest("Failed to Add.");
         }
     }
 }

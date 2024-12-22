@@ -4,7 +4,7 @@
     [ApiController]
     public class CfgRoleController : ControllerBase
     {
-        private readonly ICfgRole repo;
+        private readonly CfgRoleService repo;
         private readonly ILogger<CfgRoleController> log;
 
         public CfgRoleController(CfgRoleService repo, ILogger<CfgRoleController> log)
@@ -79,30 +79,6 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
-        }
-
-        [HttpPost("addrole")]
-        public async Task<ActionResult> AddCity(CfgRole InputData)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            bool result = await repo.AddRole(InputData);
-
-            return result ? Ok("Added successfully.") :
-                     BadRequest("Failed to Add.");
-        }
-
-        [HttpPost("updaterole")]
-        public async Task<ActionResult> UpdateCity(CfgRole InputData)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            bool result = await repo.UpdateRole(InputData);
-
-            return result ? Ok("Added successfully.") :
-                     BadRequest("Failed to Add.");
         }
     }
 }
