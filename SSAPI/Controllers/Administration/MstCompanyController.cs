@@ -82,7 +82,7 @@
         }
 
         [HttpPost("addcompany")]
-        public async Task<ActionResult> AddCompany(MstCompany InputData)
+        public async Task<ActionResult> AddComMpany(MstCompany InputData)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

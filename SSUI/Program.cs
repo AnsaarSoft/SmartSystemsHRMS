@@ -77,6 +77,8 @@ try
     builder.Services.AddHttpClient<IDropdownEmployee, EmpDependentService>(options => { options.BaseAddress = new Uri(ApiUrl + "Employee/"); });
     builder.Services.AddHttpClient<IListsDropdown, EmpDependentService>(options => { options.BaseAddress = new Uri(ApiUrl + "List/"); });
     builder.Services.AddHttpClient<IEmpDependents, EmpDependentService>(options => { options.BaseAddress = new Uri(ApiUrl + "EmpDependent/"); });
+    builder.Services.AddHttpClient<IEmpAttachment, EmpAttachmentService>(options => { options.BaseAddress = new Uri(ApiUrl + "EmpAttachment/"); });
+    builder.Services.AddHttpClient<IDropdownEmployee, EmpAttachmentService>(options => { options.BaseAddress = new Uri(ApiUrl + "Employee/"); });
 
     var app = builder.Build();
 

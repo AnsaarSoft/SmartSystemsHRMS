@@ -4,7 +4,7 @@
     [ApiController]
     public class CfgMenuController : ControllerBase
     {
-        private readonly CfgMenuService repo;
+        private readonly ICfgMenu repo;
         private readonly ILogger<CfgMenuController> log;
 
         public CfgMenuController(CfgMenuService repo, ILogger<CfgMenuController> log)
@@ -79,6 +79,30 @@
                 log.LogError(ex, ex.Message);
                 return BadRequest(Messaging.ServerError);
             }
+        }
+
+        [HttpPost("addmenu")]
+        public async Task<ActionResult> AddCity(CfgMenu InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.AddMenu(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
+        }
+
+        [HttpPost("updatemenu")]
+        public async Task<ActionResult> UpdateCity(CfgMenu InputData)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            bool result = await repo.UpdateMenu(InputData);
+
+            return result ? Ok("Added successfully.") :
+                     BadRequest("Failed to Add.");
         }
     }
 }

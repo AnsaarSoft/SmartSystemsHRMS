@@ -2,9 +2,9 @@
 {
     public interface IEmpAttachment
     {
-        public Task<vmMasterDataDD?> ModifyEmpAttachment(vmMasterDataDD UserInput);
-        public Task<List<vmMasterDataDD>?> ListEmpAttachments();
+        public Task<vmEmpAttachment?> ModifyEmpAttachment(vmEmpAttachment UserInput);
+        public Task<List<vmEmpAttachment>?> ListEmpAttachments();
         public Task<bool?> RemoveEmpAttachment(string Id);
-        public Task<vmMasterDataDD?> EditEmpAttachment(string Id);
+        public Task<vmEmpAttachment?> EditEmpAttachment(string Id);
     }
 }

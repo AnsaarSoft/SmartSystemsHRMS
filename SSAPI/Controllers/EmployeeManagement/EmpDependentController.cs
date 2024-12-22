@@ -4,7 +4,7 @@
     [ApiController]
     public class EmpDependentController : ControllerBase
     {
-        private readonly MstEmpDependentService repo;
+        private readonly IMstEmpDependent repo;
         private readonly ILogger<EmpDependentController> log;
 
         public EmpDependentController(MstEmpDependentService repo, ILogger<EmpDependentController> log)
