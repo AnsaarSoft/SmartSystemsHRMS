@@ -35,7 +35,7 @@ namespace SSAPI.Controllers.EmployeeManagement
                 {
                     if (dbuser?.UserCode == "manager")
                     {
-                        string PasswordHashBase = "7b9a9138d2c0ecd0383b1bd138877c992f71c108fb160267bcebe213a7604417";
+                        string PasswordHashBase = "b00bfb58cfe379e940fe0bffa2920f11d67d45ef1609d301d303ad894360a9f0";
                         string PasswordHashUser = GetHashPassword(oRecord.Password, oRecord.UserCode, dbuser.Id.ToString());
                         if (PasswordHashBase == PasswordHashUser)
                         {

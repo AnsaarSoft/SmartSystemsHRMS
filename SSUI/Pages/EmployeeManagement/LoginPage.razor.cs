@@ -1,8 +1,5 @@
 
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using SharedLibrary.Model.EmployeeManagement;
-using SharedLibrary.ViewModel;
 
 namespace SSUI.Pages.EmployeeManagement
 {
@@ -14,7 +11,7 @@ namespace SSUI.Pages.EmployeeManagement
         bool IsProcessing = false;
         MstUser user = new();
         vmLogin model = new();
-
+        private bool _showPassword = false;
         #endregion
 
         #region Dependency
@@ -71,6 +68,10 @@ namespace SSUI.Pages.EmployeeManagement
             }
         }
 
+        private void TogglePasswordVisibility()
+        {
+            _showPassword = !_showPassword;
+        }
         #endregion
     }
 }

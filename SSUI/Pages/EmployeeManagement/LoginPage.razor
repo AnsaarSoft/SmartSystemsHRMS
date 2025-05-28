@@ -131,6 +131,22 @@
             transition: opacity 1.5s ease, transform 1s ease;
             animation: slide-in 1s ease forwards;
         }
+        
+            .password-toggle-btn {
+                border: none;
+                background-color: #eaf2ff;
+                padding: 0 10px;
+                display: flex;
+                align-items: center;
+                height: 60px;
+                border-bottom: 2px solid #cccccc;
+                cursor: pointer;
+            }
+
+        .input-group-append{
+            margin-top: 15px;
+            height: 60px;
+        }
 
         @@keyframes slide-in {
             0% {
@@ -173,8 +189,21 @@
                                     <input type="text" id="username" placeholder="Enter Username" @bind="model.UserCode" For="@(() => model.UserCode)">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" id="password" placeholder="Enter Password" @bind="model.Password" For="@(() => model.Password)">
+                                    <div class="input-group">
+                                        <input type="@(_showPassword ? "text" : "password")"
+                                               id="password"
+                                               class="form-control"
+                                               placeholder="Enter Password"
+                                               @bind="model.Password"
+                                               For="@(() => model.Password)" />
+                                        <div class="input-group-append">
+                                            <button type="button" @onclick="TogglePasswordVisibility" class="password-toggle-btn">
+                                                <MudIcon Icon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)" />
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
+
                                @*  <MudTextField Label="Usercode/Email" HelperText="Max. 150 characters" Variant="Variant.Outlined"
                                                   @bind-Value="model.UserCode" For="@(() => model.UserCode)" />
                                     <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3" Variant="Variant.Outlined"
