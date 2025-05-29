@@ -2,26 +2,29 @@
 <style>
 
     .sidebar {
-        background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
+        background: linear-gradient(179.4deg, rgb(5, 10, 35) -16.9%, rgb(30, 15, 60) 119.9%);
         color: white;
-        width: 250px;
+        width: 400px;
         overflow: hidden;
         transition: 0.5s;
         height: 100vh;
     }
 
         .Active {
-            width: 250px;
+            width: 400px;
         }
 
     .main-menu {
         position: relative;
-        height: 100vh;
+        height: calc(100vh - 270px);
         margin-left: -30px;
+        overflow-y:scroll;
+        overflow-x:hidden;
     }
 
     .sidebar ul li {
         list-style: none;
+        margin-left: 23px;
     }
 
         .sidebar ul li a {
@@ -49,13 +52,14 @@
                 min-width: 60px;
                 height: 60px;
                 font-size: 18px;
-                margin-left: 15px;
+                margin-left: 50px;
             }
 
     .website-logo {
         margin-bottom: 40px;
         margin-inline: 6px;
         margin-top: 10px;
+        max-height: 150px;
     }
 
     .nav-bar-top-text {
@@ -114,8 +118,8 @@
     .main-menu li:hover {
         background: rgb(255, 255, 255);
         color: black;
-        width: 200px;
-        margin-left: 10px;
+        width: 400px;
+        margin-left: 30px;
         border-radius: 10px;
         transition: 1.5s;
         cursor:pointer;
@@ -127,7 +131,7 @@
     }
 
 /*     .sidebar:hover .arrow {
-        display: block; /* Show the arrow when hovering over the sidebar */
+        display: block; /* Show the arrow when hovering over the sidebar 
     } */
 
     .website-logo a {
@@ -166,6 +170,17 @@
     .open{
         display:none;
     }
+
+    /* Optional - hide scrollbar */
+    .main-menu::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+
+    .main-menu {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
 </style>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -178,7 +193,7 @@
         const top = document.getElementById('nav-bar-top-text');
         const Pic = document.getElementById('Center-Pic');
 
-        sidebar.style.width = '250px';
+        sidebar.style.width = '400px';
         // arrow.style.display = 'block';
         openbtn.style.display = 'none';
         closebtn.style.display = 'block';
@@ -219,7 +234,7 @@
     }
   
 </script>
-<div class="sidebar" id="sidebar" style="overflow-y:scroll;">
+<div class="sidebar" id="sidebar">
     <div style="display:flex;">
     <div class="nav-bar-button" id="nav-bar-button">
         <a onclick="toggleOpenBtn()"><ion-icon name="menu-outline" class="open" id="open"></ion-icon></a>
@@ -372,21 +387,21 @@
         <li @onclick="Goto_EmpExperience">
             <a>
                 <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
-                <span class="text">Employee Experience</span>
+                <span class="text">Emp. Experience</span>
             </a>
 
         </li>
         <li @onclick="Goto_EmpEducation">
             <a>
                 <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
-                <span class="text">Employee Education</span>
+                <span class="text">Emp. Education</span>
             </a>
 
         </li>
         <li @onclick="Goto_EmpDependent">
             <a>
                 <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
-                <span class="text">Employee Dependent</span>
+                <span class="text">Emp. Dependent</span>
             </a>
 
         </li>

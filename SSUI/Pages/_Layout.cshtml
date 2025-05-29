@@ -13,8 +13,94 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="SSUI.styles.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <component type="typeof(HeadOutlet)" render-mode="Server" />
 </head>
+<style>
+
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .Page-main-heading {
+        font-family: 'Roboto', sans-serif;
+        font-size: 50px;
+        font-weight: 700; /* Optional: makes heading bolder */
+        color: #000; /* Optional: ensure it's visible */
+        margin-top:10px;
+    }
+
+    .button1{
+        background: linear-gradient(179.4deg, rgb(70, 80, 120) -16.9%, rgb(110, 90, 140) 119.9%);
+        color:white;
+        padding: 11px 37px;
+        border-radius: 25px;
+    }
+
+    .button1:hover{
+       opacity:0.8;
+       color: white;
+    }
+
+    .table-heading{
+        font-weight: 700; /* Optional: makes heading bolder */
+        color: #000;
+        font-size: 20px;
+    }
+
+    .table-row-data {
+        font-weight: 100; /* Optional: makes heading bolder*/
+        color: #000;
+        font-size: 18px;
+    }
+
+    .mud-table {
+        height: 100%;
+        overflow-y: scroll;
+        border-radius: 20px;
+    }
+
+        .mud-table th {
+            padding: 10px 8px;
+        }
+
+    .mud-toolbar {
+        margin-bottom: 27px;
+    }
+    .loader-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .loader {
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #4a90e2;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 <body>
     @RenderBody()
 
@@ -30,6 +116,7 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 
 </body>

@@ -2,131 +2,141 @@
 @using System.Net.Http.Json
 @using SSUI.Services.Interface.Administration
 @inject HttpClient httpClient
+@inject ISnackbar Snackbar
 
-<style>
-    #dashboard-top {
-        width: 100%;
-        height: 30vh;
-        margin-bottom: 10px;
-        border-radius: 20px;
-        padding: 15px;
-        background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
-    }
-
-    #dashboard-bottom {
-        width: 100%;
-        height: 50vh;
-        border-radius: 20px;
-        padding: 15px;
-        background: linear-gradient(179.4deg, rgb(10, 20, 69) -16.9%, rgb(50, 30, 84) 119.9%);
-    }
-
-    #switch-fix {
-        display: flex;
-        margin-top: 15px;
-    }
-
-    .form-switch {
-        margin-left: 20px;
-    }
-
-    #dashboard-bottom .mud-table {
-        height: 100%;
-        overflow-y: scroll;
-        border-radius: 20px;
-    }
-</style>
 
 <PageTitle>Company Management</PageTitle>
+@if (isLoading)
+{
+    <div class="loader-overlay">
+        <div class="loader"></div>
+    </div>
+}
 
-<h1>Companies</h1>
+<h1 class="Page-main-heading">Companies</h1>
+<hr class="mb-4" />
+<MudDialog @bind-IsVisible="@isFormDialogVisible" MaxWidth="MaxWidth.Medium" FullWidth="true">
+    <DialogContent>
+        <EditForm Model="@formData" OnValidSubmit="@HandleSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-<div id="dashboard-top">
-    <EditForm Model="@formData" OnValidSubmit="@HandleSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <InputText id="CompanyName" hidden @bind-Value="formData.Id" class="form-control" placeholder="CompanyName" />
-        <div class="form-group">
-            <div class="row">
-                <div class="col-6">
-                    <InputText id="CompanyName" @bind-Value="formData.CompanyName" class="form-control" placeholder="Company Name" />
+            <InputText hidden @bind-Value="formData.Id" />
 
-                </div>
-                <div class="col-6">
-                    <InputText id="CompanyName" @bind-Value="formData.Alias" class="form-control" placeholder="Alias" />
+            <div class="mb-4">
+                <h3 class="font-semibold text-black text-3xl">
+                    @(isEditMode ? "Edit Company" : "Add Company")
+                </h3>
+            </div>
+            <hr class="mb-4" />
+
+            <!-- Company Name & Alias -->
+            <div class="grid grid-cols-12 gap-4 mb-4">
+                <label class="col-span-2 text-black self-center">Company Name</label>
+                <div class="col-span-10">
+                    <InputText @bind-Value="formData.CompanyName" class="form-control text-black" />
                 </div>
             </div>
-        </div>
-        <br>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-4">
-                    <InputText id="CompanyName" @bind-Value="formData.Region" class="form-control" placeholder="Region" />
-
-                </div>
-                <div class="col-4">
-                    <InputText id="Email" type="email" @bind-Value="formData.Email" class="form-control" placeholder="Email" />
-                </div>
-                <div class="col-4" style="margin-top:-20px;">
-
-                    <label style="color:white;">Subscription</label>
-                    <InputNumber id="CompanyName" @bind-Value="formData.Subscription" class="form-control" placeholder="Subscription" />
+            <div class="grid grid-cols-12 gap-4 mb-4">
+                <label class="col-span-2 text-black self-center">Alias</label>
+                <div class="col-span-10">
+                    <InputText @bind-Value="formData.Alias" class="form-control text-black" />
                 </div>
             </div>
-        </div>
-@*         <div class="form-group">
-            <InputText id="CompanyName" @bind-Value="formData.CompanyName" class="form-control" placeholder="CompanyName" />
-        </div> *@
-        <div style="display:flex;">
-            <div>
-                <div id="switch-fix" class="form-group">
-                    <label class="form-check-label" for="flexSwitchCheckChecked" style="color:white;">Status</label>
-                    <div class="form-group form-switch">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" @bind="formData.flgActive">
-                    </div>
 
-                </div>
-                <div class="d-flex justify-content-start mt-3">
-                    <button type="button" class="btn btn-secondary mr-2" @onclick="ClearForm">Clear</button>
-                    <button type="submit" class="btn btn-success">Save</button>
+            <!-- Region, Email, Subscription -->
+            <div class="grid grid-cols-12 gap-4 mb-4">
+                <label class="col-span-2 text-black self-center">Region</label>
+                <div class="col-span-10">
+                    <InputText @bind-Value="formData.Region" class="form-control text-black" />
                 </div>
             </div>
-            <div>
-                <ValidationSummary />
-
+            <div class="grid grid-cols-12 gap-4 mb-4">
+                <label class="col-span-2 text-black self-center">Email</label>
+                <div class="col-span-10">
+                    <InputText type="email" @bind-Value="formData.Email" class="form-control text-black" />
+                </div>
             </div>
-        </div>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+                <label class="col-span-2 text-black self-center">Subscription</label>
+                <div class="col-span-10">
+                    <InputNumber @bind-Value="formData.Subscription" class="form-control text-black" />
+                </div>
+            </div>
 
-    </EditForm>
-</div>
+            <!-- Status Switch -->
+            <div class="grid grid-cols-12 gap-4 mb-4">
+                <label for="status-toggle" class="col-span-2 text-black self-center">Status</label>
+                <div class="col-span-10">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="status-toggle" class="sr-only peer" @bind="formData.flgActive" />
+                        <div class="w-11 h-6 rounded-full transition-all duration-300
+                        bg-red-600
+                        peer-checked:bg-[linear-gradient(179.4deg,_rgb(70,_80,_120)_-16.9%,_rgb(110,_90,_140)_119.9%)]">
+                        </div>
+                        <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
+                    </label>
+                </div>
+            </div>
 
-<div id="dashboard-bottom" class="table-container">
-    <MudTable Items="@Entities" Filter="new Func<vmCompany,bool>(SearchFunction)" @bind-SelectedItem="SelectedEntity" Virtualize="true" FixedHeader="true" FixedFooter="true" Height="63%">
-        <ToolBarContent>
-            <MudText Typo="Typo.h6">Companies</MudText>
-            <MudSpacer />
-            <MudTextField @bind-Value="UserSearch" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>
-        <HeaderContent>
-            <MudTh>Actions</MudTh>
-            <MudTh>Serial No.</MudTh>
-            <MudTh>CompanyName</MudTh>
-            <MudTh>Status</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Actions" Style="width:200px;">
-                <button class="btn btn-success" @onclick="() => EditCompany(context.Id)">Edit</button>
-                <button class="btn btn-danger" @onclick="() => ConfirmDelete(context.Id)">Delete</button>
-            </MudTd>
-            <MudTd DataLabel="Serial No." Style="width:100px;">@(@Entities.IndexOf(context) + 1)</MudTd>
-            <MudTd DataLabel="CompanyName">@context.CompanyName</MudTd>
-            <MudTd DataLabel="Status" Style="width:100px;">@context.flgActive</MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
-    </MudTable>
-</div>
+            <div class="flex justify-end">
+                <button type="submit"
+                class="text-white px-4 py-2 rounded shadow"
+                style="background: linear-gradient(179.4deg, rgb(70, 80, 120) -16.9%, rgb(110, 90, 140) 119.9%); margin-bottom: 20px;"
+                @onclick="CloseFormDialog">
+                    Save
+                </button>
+            </div>
+
+
+
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+
+
+<MudTable Items="@Entities" Filter="new Func<vmCompany,bool>(SearchFunction)" @bind-SelectedItem="SelectedEntity" Virtualize="true" FixedHeader="true" FixedFooter="true" Height="63%">
+    <ToolBarContent>
+        <MudTextField @bind-Value="UserSearch" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudSpacer />
+        <button class="btn button1 mt-4 px-5" @onclick="OpenFormDialog">Add</button>
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh><div class="table-heading">No.</div></MudTh>
+        <MudTh><div class="table-heading">Company Name</div></MudTh>
+        <MudTh><div class="table-heading">Active</div></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+
+        <MudTd DataLabel="Serial No." Style="width:100px;"><div class="table-row-data">@(@Entities.IndexOf(context) + 1)</div></MudTd>
+        <MudTd DataLabel="CompanyName"><div class="table-row-data">@context.CompanyName</div></MudTd>
+        <MudTd DataLabel="Status" Style="width:100px;"><div class="table-row-data">
+            @if (context.flgActive)
+            {
+                <span class="px-2 py-1 rounded text-green-800 bg-green-100 text-lg font-medium">True</span>
+            }
+            else
+            {
+                <span class="px-2 py-1 rounded text-red-800 bg-red-100 text-md font-medium">False</span>
+            }
+            </div>
+        </MudTd>
+
+        <MudTd DataLabel="Actions" Style="width:300px;">
+            <div class="flex justify-end space-x-2">
+                <button class="btn button1" @onclick="() => EditCompany(context.Id)">Edit</button>
+                <button class="btn button1" @onclick="() => ConfirmDelete(context.Id)">Delete</button>
+            </div>
+        </MudTd>
+
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
 
 <MudDialog @bind-IsVisible="@isDeleteDialogVisible">
     <DialogContent>
@@ -145,6 +155,9 @@
     private string CompanyIdToDelete;
     private string UserSearch = "";
     private vmCompany SelectedEntity;
+    private bool isEditMode = false;
+    private bool isLoading = false;
+
     private List<vmCompany?> Entities = new List<vmCompany>();
 
     [Inject]
@@ -162,24 +175,35 @@
 
     private async void HandleSubmit()
     {
+        isLoading = true;
         if (string.IsNullOrEmpty(formData.Id))
         {
             formData.Id = "00000000-0000-0000-0000-000000000000";
         }
         var result = await obj.ModifyCompany(formData);
+        isLoading = false;
         if (result != null)
         {
             ClearForm();
             Entities = await obj.ListCompanies();
+            isFormDialogVisible = false;
+            Snackbar.Add(isEditMode ? "Company updated successfully!" : "Company added successfully!", Severity.Success);
             StateHasChanged();
+        } 
+        else
+        {
+            Snackbar.Add(isEditMode ? "Failed to update company." : "Failed to add company.", Severity.Error);
         }
     }
+
 
     private async void EditCompany(string Id)
     {
         var response = await obj.EditCompany(Id);
         if (response != null)
         {
+            OpenFormDialog();
+            isEditMode = true; // mark as editing mode
             formData.Id = response.Id;
             formData.CompanyName = response.CompanyName;
             formData.flgActive = response.flgActive;
@@ -187,7 +211,7 @@
             formData.Subscription = response.Subscription;
             formData.Email = response.Email;
             formData.Alias = response.Alias;
-            await InvokeAsync(StateHasChanged);
+            await InvokeAsync(StateHasChanged);            
         }
     }
     private void ConfirmDelete(string Id)
@@ -198,14 +222,21 @@
 
     private async void DeleteCompanyConfirmed()
     {
+        isLoading = true;
         isDeleteDialogVisible = false;
         var response = await obj.RemoveCompany(CompanyIdToDelete);
+        isLoading = false;
         if (response == true)
         {
             ClearForm();
             var entities = await obj.ListCompanies();
             Entities = entities ?? new List<vmCompany>();
+            Snackbar.Add("Company deleted successfully!", Severity.Success);
             StateHasChanged();
+        }
+        else
+        {
+            Snackbar.Add("Failed to delete the company.", Severity.Error);
         }
     }
 
@@ -223,5 +254,19 @@
         if (element.CompanyName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
+    }
+
+    private bool isFormDialogVisible = false;
+
+    private void OpenFormDialog()
+    {
+        isEditMode = false;
+        ClearForm();
+        isFormDialogVisible = true;
+    }
+
+    private void CloseFormDialog()
+    {
+        isFormDialogVisible = false;
     }
 }
